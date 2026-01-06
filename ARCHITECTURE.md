@@ -141,6 +141,7 @@
 ## Component Responsibilities
 
 ### 1. Frontend (control.html + previousdraft.js)
+
 ```javascript
 Responsibilities:
 ├── User interaction (button clicks)
@@ -150,6 +151,7 @@ Responsibilities:
 ```
 
 ### 2. Server (server.js)
+
 ```javascript
 Responsibilities:
 ├── Receive save requests
@@ -161,6 +163,7 @@ Responsibilities:
 ```
 
 ### 3. Firebase Config (firebaseConfig.js)
+
 ```javascript
 Responsibilities:
 ├── Initialize Firebase Admin SDK
@@ -172,6 +175,7 @@ Responsibilities:
 ```
 
 ### 4. Firebase Realtime Database
+
 ```javascript
 Responsibilities:
 ├── Store data persistently
@@ -245,26 +249,31 @@ Ready to Save/Retrieve Data ✅
 ## Benefits of This Architecture
 
 ### ✅ Redundancy
+
 - Data saved locally AND in cloud
 - Never lose draft data
 - Multiple backup points
 
 ### ✅ Scalability
+
 - Firebase handles scaling automatically
 - No server maintenance needed
 - Handles concurrent users
 
 ### ✅ Accessibility
+
 - Access drafts from any device
 - Share data between systems
 - Remote access capability
 
 ### ✅ Real-time Sync
+
 - Multiple clients can read simultaneously
 - Instant updates when data changes
 - No polling needed
 
 ### ✅ Reliability
+
 - Firebase 99.95% uptime SLA
 - Automatic backups
 - Data persistence guaranteed
@@ -289,21 +298,25 @@ control.html
 ## Next Steps After Setup
 
 1. **Test the Integration**
+
    - Save a draft
    - Verify in Firebase Console
    - Check local backup
 
 2. **Build Draft History Viewer**
+
    - Create new HTML page
    - Fetch drafts from API
    - Display in table/cards
 
 3. **Add Analytics**
+
    - Hero pick rates
    - Ban rates
    - Win rates (if tracked)
 
 4. **Export Functionality**
+
    - Download drafts as JSON
    - Generate PDF reports
    - Export to Excel

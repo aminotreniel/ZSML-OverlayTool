@@ -2,79 +2,79 @@
   "draftdata": {
     "timer": "60",
     "timerRunning": false,
-    "current_phase": 17,
+    "current_phase": 0,
     "blueside": {
       "ban": [
         {
-          "hero": "/Assets/HeroPick/aldous.png"
+          "hero": ""
         },
         {
-          "hero": "/Assets/HeroPick/argus.png"
+          "hero": ""
         },
         {
-          "hero": "/Assets/HeroPick/chip.png"
+          "hero": ""
         },
         {
-          "hero": "/Assets/HeroPick/pharsa.png"
+          "hero": ""
         },
         {
-          "hero": "/Assets/HeroPick/benedetta.png"
+          "hero": ""
         }
       ],
       "pick": [
         {
-          "hero": "/Assets/HeroPick/gatotkaca.png"
+          "hero": ""
         },
         {
-          "hero": "/Assets/HeroPick/balmond.png"
+          "hero": ""
         },
         {
-          "hero": "/Assets/HeroPick/balmond.png"
+          "hero": ""
         },
         {
-          "hero": "/Assets/HeroPick/silvanna.png"
+          "hero": ""
         },
         {
-          "hero": "/Assets/HeroPick/julian.png"
+          "hero": ""
         }
       ]
     },
     "redside": {
       "ban": [
         {
-          "hero": "/Assets/HeroPick/argus.png"
+          "hero": ""
         },
         {
-          "hero": "/Assets/HeroPick/chang_e.png"
+          "hero": ""
         },
         {
-          "hero": "/Assets/HeroPick/lancelot.png"
+          "hero": ""
         },
         {
-          "hero": "/Assets/HeroPick/aamon.png"
+          "hero": ""
         },
         {
-          "hero": "/Assets/HeroPick/melissa.png"
+          "hero": ""
         }
       ],
       "pick": [
         {
-          "hero": "/Assets/HeroPick/jawhead.png"
+          "hero": ""
         },
         {
-          "hero": "/Assets/HeroPick/akai.png"
+          "hero": ""
         },
         {
-          "hero": "/Assets/HeroPick/baxia.png"
+          "hero": ""
         },
         {
-          "hero": "/Assets/HeroPick/fanny.png"
+          "hero": ""
         },
         {
-          "hero": "/Assets/HeroPick/baxia.png"
+          "hero": ""
         }
       ]
     },
-    "timer_running": true
+    "timer_running": false
   }
 }

@@ -106,11 +106,12 @@ function cleanDraftData(draftData) {
 }
 
 /**
- * Save previous match draft to Firestore
+ * Save match draft to Firestore with team data
  * @param {Object} draftData - The draft data to save
+ * @param {Object} teamData - The team data (names and scores)
  * @returns {Promise<Object>} Result with success status and message
  */
-async function savePreviousMatchDraft(draftData) {
+async function saveMatchDraft(draftData, teamData) {
     try {
         if (!db) {
             const initDb = initializeFirebase();
@@ -119,9 +120,17 @@ async function savePreviousMatchDraft(draftData) {
             }
         }
 
-        // Generate unique ID with timestamp
-        const timestamp = Date.now();
-        const draftId = `draft_${timestamp}`;
+        // Extract team names and score
+        const blueTeamName = teamData.teamdata.blueteam.teamname || 'BlueTeam';
+        const redTeamName = teamData.teamdata.redteam.teamname || 'RedTeam';
+        const score = teamData.teamdata.blueteam.score || '0';
+
+        // Clean team names (remove spaces and special characters)
+        const cleanBlueName = blueTeamName.replace(/\s+/g, '');
+        const cleanRedName = redTeamName.replace(/\s+/g, '');
+
+        // Generate document ID: Draft{score}_{Team1}VS{Team2}
+        const docId = `Draft${score}_${cleanBlueName}VS${cleanRedName}`;
 
         // Clean hero data (remove paths and extensions)
         const cleanedDraft = cleanDraftData(draftData);
@@ -129,24 +138,24 @@ async function savePreviousMatchDraft(draftData) {
         // Add metadata
         const dataToSave = {
             ...cleanedDraft,
-            savedAt: timestamp,
+            teamData: teamData.teamdata,
+            savedAt: Date.now(),
             savedDate: new Date().toISOString()
         };
 
-        // Save to Firestore in 'previousMatchDrafts' collection
-        await db.collection('previousMatchDrafts').doc(draftId).set(dataToSave);
+        // Save to Firestore in 'MatchDraft' collection
+        await db.collection('MatchDraft').doc(docId).set(dataToSave);
 
-        console.log(`✅ Draft saved to Firestore with ID: ${draftId}`);
+        console.log(`✅ Match draft saved to Firestore with ID: ${docId}`);
         
         return {
             success: true,
-            message: 'Draft saved to Firestore successfully',
-            draftId: draftId,
-            timestamp: timestamp
+            message: 'Match draft saved to Firestore successfully',
+            draftId: docId
         };
 
     } catch (error) {
-        console.error('❌ Error saving draft to Firestore:', error.message);
+        console.error('❌ Error saving match draft to Firestore:', error.message);
         return {
             success: false,
             message: `Error saving to Firestore: ${error.message}`
@@ -155,11 +164,11 @@ async function savePreviousMatchDraft(draftData) {
 }
 
 /**
- * Get all previous match drafts from Firestore
+ * Get all match drafts from Firestore
  * @param {number} limit - Maximum number of drafts to retrieve (default: 10)
  * @returns {Promise<Array>} Array of draft objects
  */
-async function getPreviousMatchDrafts(limit = 10) {
+async function getMatchDrafts(limit = 10) {
     try {
         if (!db) {
             const initDb = initializeFirebase();
@@ -168,7 +177,7 @@ async function getPreviousMatchDrafts(limit = 10) {
             }
         }
 
-        const snapshot = await db.collection('previousMatchDrafts')
+        const snapshot = await db.collection('MatchDraft')
             .orderBy('savedAt', 'desc')
             .limit(limit)
             .get();
@@ -203,7 +212,7 @@ async function getDraftById(draftId) {
             }
         }
 
-        const doc = await db.collection('previousMatchDrafts').doc(draftId).get();
+        const doc = await db.collection('MatchDraft').doc(draftId).get();
         
         if (doc.exists) {
             return { id: doc.id, ...doc.data() };
@@ -231,7 +240,7 @@ async function deleteDraft(draftId) {
             }
         }
 
-        await db.collection('previousMatchDrafts').doc(draftId).delete();
+        await db.collection('MatchDraft').doc(draftId).delete();
         
         console.log(`✅ Draft ${draftId} deleted from Firestore`);
         return { success: true, message: 'Draft deleted successfully' };
@@ -244,8 +253,8 @@ async function deleteDraft(draftId) {
 
 module.exports = {
     initializeFirebase,
-    savePreviousMatchDraft,
-    getPreviousMatchDrafts,
+    saveMatchDraft,
+    getMatchDrafts,
     getDraftById,
     deleteDraft
 };

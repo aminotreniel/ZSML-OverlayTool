@@ -13,15 +13,18 @@ Your MLBB Overlay Tool now **automatically saves all draft data to Firebase** (c
 ## 📚 Documentation Guide
 
 ### 🚀 **Start Here:**
+
 1. **[QUICKSTART.md](QUICKSTART.md)** - 5-minute setup guide
 2. **[SETUP_CHECKLIST.md](SETUP_CHECKLIST.md)** - Step-by-step checklist
 
 ### 📖 **Detailed Guides:**
+
 - **[FIREBASE_SETUP.md](FIREBASE_SETUP.md)** - Complete Firebase setup instructions
 - **[ARCHITECTURE.md](ARCHITECTURE.md)** - How the system works
 - **[FIREBASE_INTEGRATION_SUMMARY.md](FIREBASE_INTEGRATION_SUMMARY.md)** - What files were changed
 
 ### 💻 **For Developers:**
+
 - **[FIREBASE_EXAMPLES.js](FIREBASE_EXAMPLES.js)** - 10 code examples and API usage
 
 ## 🎬 Quick Setup (TL;DR)
@@ -49,10 +52,11 @@ node server.js
 ## 📁 What Was Added/Changed
 
 ### ✨ New Files
+
 ```
 firebaseConfig.js           - Firebase setup & functions
 QUICKSTART.md              - Quick setup guide
-FIREBASE_SETUP.md          - Detailed setup guide  
+FIREBASE_SETUP.md          - Detailed setup guide
 FIREBASE_EXAMPLES.js       - Code examples
 FIREBASE_INTEGRATION_SUMMARY.md - Summary of changes
 ARCHITECTURE.md            - System architecture
@@ -62,6 +66,7 @@ README_FIREBASE.md         - This file
 ```
 
 ### 🔧 Modified Files
+
 ```
 package.json               - Added firebase-admin
 server.js                  - Integrated Firebase
@@ -72,6 +77,7 @@ server.js                  - Integrated Firebase
 ```
 
 ### 📋 Files You Need to Add
+
 ```
 serviceAccountKey.json     - Firebase credentials (YOU add this!)
 ```
@@ -81,6 +87,7 @@ serviceAccountKey.json     - Firebase credentials (YOU add this!)
 ⚠️ **You must add `serviceAccountKey.json` to the project root!**
 
 **How to get it:**
+
 1. Go to [Firebase Console](https://console.firebase.google.com/)
 2. Select/Create your project
 3. Click ⚙️ → Project settings → Service accounts
@@ -93,6 +100,7 @@ serviceAccountKey.json     - Firebase credentials (YOU add this!)
 ## 🎮 How It Works
 
 ### Before (Local Only)
+
 ```
 Draft Data → Saved to local file
            → Lost if file deleted
@@ -100,6 +108,7 @@ Draft Data → Saved to local file
 ```
 
 ### After (Firebase Integrated)
+
 ```
 Draft Data → Saved to local file (backup)
            → Saved to Firebase (cloud)
@@ -111,32 +120,37 @@ Draft Data → Saved to local file (backup)
 ## 🌐 New API Endpoints
 
 ### Save Draft
+
 ```javascript
-POST /api/archive-draft
+POST / api / archive - draft;
 // Saves current draft to Firebase + local file
 ```
 
 ### Get All Drafts
+
 ```javascript
 GET /api/previous-drafts?limit=10
 // Returns last 10 drafts (adjustable)
 ```
 
 ### Get Specific Draft
+
 ```javascript
-GET /api/previous-drafts/draft_1704537600000
+GET / api / previous - drafts / draft_1704537600000;
 // Returns one draft by ID
 ```
 
 ### Delete Draft
+
 ```javascript
-DELETE /api/previous-drafts/draft_1704537600000
+DELETE / api / previous - drafts / draft_1704537600000;
 // Deletes a draft from Firebase
 ```
 
 ## 💡 Usage Examples
 
 ### Save a Draft
+
 1. Open http://localhost:3000/control.html
 2. Set up your draft (teams, picks, bans)
 3. Click **"SAVE TO PREVIOUS"**
@@ -144,25 +158,27 @@ DELETE /api/previous-drafts/draft_1704537600000
 5. See **"SAVED!"** confirmation ✅
 
 ### View Saved Drafts
+
 ```javascript
 // In your JavaScript:
-fetch('/api/previous-drafts?limit=20')
-  .then(res => res.json())
-  .then(data => {
-    console.log('Found', data.count, 'drafts');
-    data.drafts.forEach(draft => {
+fetch("/api/previous-drafts?limit=20")
+  .then((res) => res.json())
+  .then((data) => {
+    console.log("Found", data.count, "drafts");
+    data.drafts.forEach((draft) => {
       console.log(draft.id, draft.savedDate);
     });
   });
 ```
 
 ### Load a Specific Draft
+
 ```javascript
-fetch('/api/previous-drafts/draft_1704537600000')
-  .then(res => res.json())
-  .then(data => {
+fetch("/api/previous-drafts/draft_1704537600000")
+  .then((res) => res.json())
+  .then((data) => {
     const picks = data.draft.draftdata.blueside.pick;
-    console.log('Blue team picks:', picks);
+    console.log("Blue team picks:", picks);
   });
 ```
 
@@ -202,18 +218,21 @@ See [FIREBASE_EXAMPLES.js](FIREBASE_EXAMPLES.js) for 10 detailed examples!
 ## 🔒 Security
 
 ### Protected Files
+
 - `serviceAccountKey.json` is in `.gitignore`
 - Never commit this file to Git!
 - Keep it secure and private
 
 ### Firebase Security Rules
+
 Start in test mode, then update for production:
+
 ```json
 {
   "rules": {
     "previousMatchDrafts": {
       ".read": true,
-      ".write": false  // Only server can write
+      ".write": false // Only server can write
     }
   }
 }
@@ -223,13 +242,13 @@ Your server uses Admin SDK and bypasses these rules (full access).
 
 ## 🆘 Troubleshooting
 
-| Problem | Solution |
-|---------|----------|
+| Problem                    | Solution                                       |
+| -------------------------- | ---------------------------------------------- |
 | "Firebase not initialized" | Add `serviceAccountKey.json` to root directory |
-| "Cannot find module" | Run `npm install` |
-| "PERMISSION_DENIED" | Enable Realtime Database in Firebase Console |
-| "Port already in use" | Change port in server.js or kill process |
-| Button doesn't save | Check browser console & server logs |
+| "Cannot find module"       | Run `npm install`                              |
+| "PERMISSION_DENIED"        | Enable Realtime Database in Firebase Console   |
+| "Port already in use"      | Change port in server.js or kill process       |
+| Button doesn't save        | Check browser console & server logs            |
 
 See [SETUP_CHECKLIST.md](SETUP_CHECKLIST.md) for detailed troubleshooting!
 
@@ -253,11 +272,13 @@ Examples for all of these in [FIREBASE_EXAMPLES.js](FIREBASE_EXAMPLES.js)!
 ## 🎓 Learning Resources
 
 ### Included Documentation
+
 - Read the 5 guide files in this project
 - Study the code examples
 - Follow the setup checklist
 
 ### External Resources
+
 - [Firebase Documentation](https://firebase.google.com/docs)
 - [Firebase Realtime Database Guide](https://firebase.google.com/docs/database)
 - [Firebase Admin SDK](https://firebase.google.com/docs/admin/setup)
@@ -265,6 +286,7 @@ Examples for all of these in [FIREBASE_EXAMPLES.js](FIREBASE_EXAMPLES.js)!
 ## ✅ Verification Checklist
 
 Your setup is complete when:
+
 - [ ] Server starts without errors
 - [ ] Logs show "✅ Firebase initialized successfully"
 - [ ] Can save drafts from control panel
@@ -284,6 +306,7 @@ See [SETUP_CHECKLIST.md](SETUP_CHECKLIST.md) for full checklist!
 ## 🎉 Success!
 
 Once set up, every draft you save will be:
+
 - ✅ Stored in Firebase cloud
 - ✅ Backed up locally
 - ✅ Accessible forever
@@ -295,6 +318,7 @@ Once set up, every draft you save will be:
 ---
 
 **Files Overview:**
+
 - `README_FIREBASE.md` ← You are here
 - [QUICKSTART.md](QUICKSTART.md) ← Start here for setup
 - [SETUP_CHECKLIST.md](SETUP_CHECKLIST.md) ← Follow this checklist

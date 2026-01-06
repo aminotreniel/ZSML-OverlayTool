@@ -3,21 +3,25 @@
 Use this checklist to ensure everything is set up correctly!
 
 ## ☑️ Pre-Setup
+
 - [ ] Node.js is installed on your computer
 - [ ] You have a Google account
 - [ ] You have internet connection
 - [ ] Project is downloaded and extracted
 
 ## ☑️ NPM Dependencies
+
 - [x] `firebase-admin` added to package.json ✅ (Done)
 - [x] Dependencies installed (`npm install`) ✅ (Done)
 
 ## ☑️ Firebase Project Setup
+
 - [ ] Logged into https://console.firebase.google.com/
 - [ ] Created new Firebase project named "MLBB-Overlay-Tool" (or your choice)
 - [ ] Noted your project ID: `_________________`
 
 ## ☑️ Firebase Realtime Database
+
 - [ ] Clicked "Realtime Database" in Firebase Console
 - [ ] Clicked "Create Database"
 - [ ] Selected a location (e.g., asia-southeast1)
@@ -26,6 +30,7 @@ Use this checklist to ensure everything is set up correctly!
 - [ ] Noted database URL: `https://_____________.firebaseio.com`
 
 ## ☑️ Service Account Key
+
 - [ ] Clicked ⚙️ (gear icon) → "Project settings"
 - [ ] Clicked "Service accounts" tab
 - [ ] Clicked "Generate new private key"
@@ -35,6 +40,7 @@ Use this checklist to ensure everything is set up correctly!
       `/Users/reniel/Downloads/False MLBB Overlaytool V3.31/serviceAccountKey.json`
 
 ## ☑️ File Structure Verification
+
 Check that these files exist:
 
 ```
@@ -54,6 +60,7 @@ False MLBB Overlaytool V3.31/
 ```
 
 ## ☑️ Server Test
+
 - [ ] Opened terminal in project directory
 - [ ] Ran `node server.js`
 - [ ] Server started without errors
@@ -61,6 +68,7 @@ False MLBB Overlaytool V3.31/
 - [ ] Can access http://localhost:3000/control.html
 
 ## ☑️ Functionality Test
+
 - [ ] Opened control panel (http://localhost:3000/control.html)
 - [ ] Entered team names (Blue & Red)
 - [ ] Selected some hero picks
@@ -70,6 +78,7 @@ False MLBB Overlaytool V3.31/
 - [ ] Saw "SAVED!" message with green background
 
 ## ☑️ Firebase Verification
+
 - [ ] Opened Firebase Console (https://console.firebase.google.com/)
 - [ ] Clicked on your project
 - [ ] Clicked "Realtime Database"
@@ -78,21 +87,23 @@ False MLBB Overlaytool V3.31/
 - [ ] Can expand and see draft data (picks, bans, timestamp)
 
 ## ☑️ API Testing (Optional but Recommended)
+
 Test these endpoints in your browser or Postman:
 
-- [ ] `http://localhost:3000/api/previous-drafts` 
+- [ ] `http://localhost:3000/api/previous-drafts`
       → Should return JSON with your saved drafts
-      
 - [ ] `http://localhost:3000/api/previous-drafts?limit=5`
       → Should return last 5 drafts
 
 ## ☑️ Security Check
+
 - [ ] `serviceAccountKey.json` is in `.gitignore`
 - [ ] `serviceAccountKey.json` is NOT committed to Git
 - [ ] Haven't shared service account key with anyone
 - [ ] Service account key is safely backed up (somewhere secure)
 
 ## ☑️ Optional Enhancements
+
 - [ ] Read `FIREBASE_EXAMPLES.js` for code examples
 - [ ] Created a draft history viewer page
 - [ ] Set up proper Firebase security rules
@@ -102,7 +113,9 @@ Test these endpoints in your browser or Postman:
 ## 🆘 Troubleshooting
 
 ### ❌ "Firebase service account key not found"
+
 **Checklist:**
+
 - [ ] File is named exactly `serviceAccountKey.json`
 - [ ] File is in the root directory (not in a subfolder)
 - [ ] File path is correct
@@ -113,7 +126,9 @@ Test these endpoints in your browser or Postman:
 ---
 
 ### ❌ "Cannot find module 'firebase-admin'"
+
 **Checklist:**
+
 - [ ] Ran `npm install` in the project directory
 - [ ] No error messages during installation
 - [ ] `node_modules` folder exists
@@ -124,7 +139,9 @@ Test these endpoints in your browser or Postman:
 ---
 
 ### ❌ "PERMISSION_DENIED"
+
 **Checklist:**
+
 - [ ] Realtime Database is created and active
 - [ ] Database rules are in "test mode" (allow read/write)
 - [ ] Service account has proper permissions
@@ -134,7 +151,9 @@ Test these endpoints in your browser or Postman:
 ---
 
 ### ❌ Button shows "SAVED!" but no data in Firebase
+
 **Checklist:**
+
 - [ ] Check browser console for errors (F12)
 - [ ] Check server terminal for error messages
 - [ ] Verify internet connection
@@ -145,11 +164,14 @@ Test these endpoints in your browser or Postman:
 ---
 
 ### ❌ Server won't start (Port already in use)
+
 **Checklist:**
+
 - [ ] Another process is using port 3000
 - [ ] Previous server instance still running
 
-**Fix:** 
+**Fix:**
+
 ```bash
 # macOS/Linux
 lsof -ti:3000 | xargs kill -9
@@ -177,14 +199,17 @@ You've successfully set up Firebase integration if:
 If you're stuck:
 
 1. **Check the detailed guides:**
+
    - [QUICKSTART.md](QUICKSTART.md) - Quick 5-minute setup
    - [FIREBASE_SETUP.md](FIREBASE_SETUP.md) - Detailed instructions
    - [ARCHITECTURE.md](ARCHITECTURE.md) - How everything works
 
 2. **Review code examples:**
+
    - [FIREBASE_EXAMPLES.js](FIREBASE_EXAMPLES.js) - 10 usage examples
 
 3. **Check Firebase documentation:**
+
    - https://firebase.google.com/docs/database
    - https://firebase.google.com/docs/admin/setup
 
@@ -201,6 +226,7 @@ If you're stuck:
 Once all checkboxes are checked, your MLBB Overlay Tool is fully integrated with Firebase!
 
 Your draft data is now:
+
 - ✅ Saved to the cloud
 - ✅ Accessible from anywhere
 - ✅ Backed up automatically

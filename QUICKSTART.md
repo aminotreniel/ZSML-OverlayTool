@@ -1,6 +1,7 @@
 # 🚀 Quick Start - Firebase Integration
 
 ## Prerequisites Checklist
+
 - [ ] Node.js installed
 - [ ] Firebase account (Google account)
 - [ ] This project downloaded
@@ -8,11 +9,13 @@
 ## 5-Minute Setup
 
 ### 1️⃣ Install Dependencies (Already Done ✅)
+
 ```bash
 npm install
 ```
 
 ### 2️⃣ Your Firebase Project (Already Set Up ✅)
+
 - **Project ID:** `zsml-e7eb7`
 - **Project Name:** ZSML
 - **Using:** Firestore Database
@@ -20,6 +23,7 @@ npm install
 You already have this configured! Just need to get the service account key.
 
 ### 3️⃣ Download Service Account Key
+
 1. Go to https://console.firebase.google.com/project/zsml-e7eb7/settings/serviceaccounts/adminsdk
 2. Click "Generate new private key"
 3. Click "Generate key"
@@ -30,11 +34,13 @@ You already have this configured! Just need to get the service account key.
    ```
 
 ### 4️⃣ Start the Server
+
 ```bash
 node server.js
 ```
 
 ✅ **Success if you see:**
+
 ```
 Initializing Firebase...
 ✅ Firebase initialized successfully
@@ -43,12 +49,15 @@ Initializing Firebase...
 ```
 
 ❌ **Error if you see:**
+
 ```
 ⚠️  Firebase service account key not found!
 ```
+
 → Make sure `serviceAccountKey.json` is in the root directory!
 
 ### 5️⃣ Test It
+
 1. Open: http://localhost:3000/control.html
 2. Set up a draft (teams, picks, bans)
 3. Click "SAVE TO PREVIOUS"
@@ -56,6 +65,7 @@ Initializing Firebase...
 5. Should see "SAVED!" ✅
 
 ### 6️⃣ Verify in Firebase
+
 1. Go to https://console.firebase.google.com/project/zsml-e7eb7/firestore
 2. Click "Firestore Database"
 3. Look for `previousMatchDrafts` collection
@@ -80,16 +90,17 @@ False MLBB Overlaytool V3.31/
 
 ## 🆘 Common Issues
 
-| Problem | Solution |
-|---------|----------|
+| Problem                    | Solution                             |
+| -------------------------- | ------------------------------------ |
 | "Firebase not initialized" | Add `serviceAccountKey.json` to root |
-| "Cannot find module" | Run `npm install` |
-| "PERMISSION_DENIED" | Check Firebase security rules |
-| Server won't start | Check if port 3000 is already in use |
+| "Cannot find module"       | Run `npm install`                    |
+| "PERMISSION_DENIED"        | Check Firebase security rules        |
+| Server won't start         | Check if port 3000 is already in use |
 
 ## 🎯 What This Does
 
 When you click "SAVE TO PREVIOUS":
+
 1. ✅ Saves to local file (`previousmatchdraft.json`)
 2. ✅ Saves to Firestore (cloud database - Project: zsml-e7eb7)
 3. ✅ Can be accessed from anywhere
@@ -99,6 +110,7 @@ When you click "SAVE TO PREVIOUS":
 ## 📊 View Your Data
 
 ### In Firebase Console:
+
 Visit: https://console.firebase.google.com/project/zsml-e7eb7/firestore
 
 ```
@@ -116,11 +128,12 @@ previousMatchDrafts/ (Collection)
 ```
 
 ### Via API:
+
 ```javascript
 // Get all drafts
-fetch('/api/previous-drafts?limit=10')
-  .then(res => res.json())
-  .then(data => console.log(data));
+fetch("/api/previous-drafts?limit=10")
+  .then((res) => res.json())
+  .then((data) => console.log(data));
 ```
 
 ## 🎉 You're Done!
@@ -128,6 +141,7 @@ fetch('/api/previous-drafts?limit=10')
 Your MLBB Overlay Tool now saves all drafts to Firebase!
 
 **Next Steps:**
+
 - Read [FIREBASE_EXAMPLES.js](FIREBASE_EXAMPLES.js) for advanced usage
 - See [FIREBASE_SETUP.md](FIREBASE_SETUP.md) for detailed info
 - Check [FIREBASE_INTEGRATION_SUMMARY.md](FIREBASE_INTEGRATION_SUMMARY.md) for what changed
@@ -135,6 +149,7 @@ Your MLBB Overlay Tool now saves all drafts to Firebase!
 ## 🔒 Security Reminder
 
 ⚠️ **NEVER share or commit `serviceAccountKey.json`**
+
 - It's already in `.gitignore`
 - Keep it secret
 - Don't upload to GitHub

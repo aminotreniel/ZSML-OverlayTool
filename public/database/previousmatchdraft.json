@@ -2,17 +2,17 @@
   "draftdata": {
     "timer": "60",
     "timerRunning": false,
-    "current_phase": 17,
+    "current_phase": 18,
     "blueside": {
       "ban": [
         {
           "hero": "/Assets/HeroPick/aldous.png"
         },
         {
-          "hero": "/Assets/HeroPick/argus.png"
+          "hero": "/Assets/HeroPick/jawhead.png"
         },
         {
-          "hero": "/Assets/HeroPick/chip.png"
+          "hero": "/Assets/HeroPick/gatotkaca.png"
         },
         {
           "hero": "/Assets/HeroPick/pharsa.png"
@@ -23,7 +23,7 @@
       ],
       "pick": [
         {
-          "hero": "/Assets/HeroPick/gatotkaca.png"
+          "hero": "/Assets/HeroPick/chip.png"
         },
         {
           "hero": "/Assets/HeroPick/balmond.png"
@@ -59,7 +59,7 @@
       ],
       "pick": [
         {
-          "hero": "/Assets/HeroPick/jawhead.png"
+          "hero": "/Assets/HeroPick/argus.png"
         },
         {
           "hero": "/Assets/HeroPick/akai.png"
@@ -71,7 +71,7 @@
           "hero": "/Assets/HeroPick/fanny.png"
         },
         {
-          "hero": "/Assets/HeroPick/baxia.png"
+          "hero": "/Assets/HeroPick/hylos.png"
         }
       ]
     },

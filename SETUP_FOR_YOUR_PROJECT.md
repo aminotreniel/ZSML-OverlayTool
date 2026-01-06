@@ -35,9 +35,10 @@ node server.js
 ```
 
 You should see:
+
 ```
 =============================================
- SERVER STARTED 
+ SERVER STARTED
  Local:   http://localhost:3000
  Network: http://192.168.x.x:3000
 =============================================
@@ -69,12 +70,14 @@ Initializing Firebase...
 The detailed guides (FIREBASE_SETUP.md, etc.) were written assuming you'd create a new Firebase project. But since you already have one, here's what's been customized for you:
 
 ### ✅ Already Done:
+
 - Firebase project created (zsml-e7eb7)
 - Firestore enabled
 - Firebase configuration exists
 - Client-side Firebase already set up
 
 ### ⚠️ What You Still Need:
+
 - Service account key (for server-side access)
 - Place `serviceAccountKey.json` in project root
 
@@ -83,17 +86,21 @@ The detailed guides (FIREBASE_SETUP.md, etc.) were written assuming you'd create
 ### Visual Guide:
 
 1. **Go to Firebase Console:**
+
    - https://console.firebase.google.com/
 
 2. **Select your project:**
+
    - Click on "zsml-e7eb7"
 
 3. **Navigate to Service Accounts:**
+
    - Click the gear icon ⚙️ (top left)
    - Click "Project settings"
    - Click the "Service accounts" tab
 
 4. **Generate the key:**
+
    - Scroll down to "Firebase Admin SDK"
    - Select "Node.js"
    - Click "Generate new private key"
@@ -117,13 +124,15 @@ curl http://localhost:3000/api/previous-drafts
 ```
 
 Should return:
+
 ```json
-{"success":true,"drafts":[],"count":0}
+{ "success": true, "drafts": [], "count": 0 }
 ```
 
 ## 📊 Your Firebase Project Structure
 
 ### Current (Client-side):
+
 ```javascript
 // You already have this
 const firebaseConfig = {
@@ -134,6 +143,7 @@ const firebaseConfig = {
 ```
 
 ### New (Server-side):
+
 ```javascript
 // Now you'll also have this (via serviceAccountKey.json)
 // Server uses Firebase Admin SDK
@@ -142,6 +152,7 @@ const firebaseConfig = {
 ```
 
 ### Both work together:
+
 - **Client-side:** For web app features, analytics
 - **Server-side:** For secure data operations, draft saving
 
@@ -158,11 +169,13 @@ The `serviceAccountKey.json` gives **full admin access** to your Firebase projec
 ## 🆘 Troubleshooting
 
 ### "Firebase service account key not found"
+
 - Make sure file is named exactly: `serviceAccountKey.json`
 - Make sure it's in the root directory, not in a subfolder
 - Path should be: `/Users/reniel/Downloads/False MLBB Overlaytool V3.31/serviceAccountKey.json`
 
 ### "Permission denied" when saving
+
 - Check Firestore rules in Firebase Console
 - For testing, you can use these permissive rules:
   ```
@@ -177,6 +190,7 @@ The `serviceAccountKey.json` gives **full admin access** to your Firebase projec
   ```
 
 ### Can't access Firebase Console
+
 - Make sure you're logged in with the correct Google account
 - The account that created the zsml-e7eb7 project
 
@@ -216,6 +230,7 @@ Saved in "previousMatchDrafts" collection ✅
 Once the checklist is complete, your MLBB Overlay Tool will automatically save all drafts to your Firestore database!
 
 **Direct Links:**
+
 - Your Firebase Console: https://console.firebase.google.com/project/zsml-e7eb7
 - Your Firestore Database: https://console.firebase.google.com/project/zsml-e7eb7/firestore
 - Service Account Settings: https://console.firebase.google.com/project/zsml-e7eb7/settings/serviceaccounts

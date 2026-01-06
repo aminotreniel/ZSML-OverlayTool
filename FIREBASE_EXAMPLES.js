@@ -5,23 +5,23 @@
 // ============================================
 
 async function getAllDrafts() {
-    try {
-        const response = await fetch('/api/previous-drafts?limit=20');
-        const data = await response.json();
-        
-        if (data.success) {
-            console.log(`Found ${data.count} drafts`);
-            data.drafts.forEach(draft => {
-                console.log('Draft ID:', draft.id);
-                console.log('Saved At:', new Date(draft.savedAt).toLocaleString());
-                console.log('Blue Team Picks:', draft.draftdata.blueside.pick);
-                console.log('Red Team Picks:', draft.draftdata.redside.pick);
-                console.log('---');
-            });
-        }
-    } catch (error) {
-        console.error('Error fetching drafts:', error);
+  try {
+    const response = await fetch("/api/previous-drafts?limit=20");
+    const data = await response.json();
+
+    if (data.success) {
+      console.log(`Found ${data.count} drafts`);
+      data.drafts.forEach((draft) => {
+        console.log("Draft ID:", draft.id);
+        console.log("Saved At:", new Date(draft.savedAt).toLocaleString());
+        console.log("Blue Team Picks:", draft.draftdata.blueside.pick);
+        console.log("Red Team Picks:", draft.draftdata.redside.pick);
+        console.log("---");
+      });
     }
+  } catch (error) {
+    console.error("Error fetching drafts:", error);
+  }
 }
 
 // ============================================
@@ -29,25 +29,27 @@ async function getAllDrafts() {
 // ============================================
 
 async function displayDraftsInUI() {
-    const response = await fetch('/api/previous-drafts?limit=10');
-    const data = await response.json();
-    
-    if (data.success) {
-        const container = document.getElementById('drafts-container');
-        
-        data.drafts.forEach(draft => {
-            const draftElement = document.createElement('div');
-            draftElement.className = 'draft-card';
-            draftElement.innerHTML = `
+  const response = await fetch("/api/previous-drafts?limit=10");
+  const data = await response.json();
+
+  if (data.success) {
+    const container = document.getElementById("drafts-container");
+
+    data.drafts.forEach((draft) => {
+      const draftElement = document.createElement("div");
+      draftElement.className = "draft-card";
+      draftElement.innerHTML = `
                 <h3>Draft ${draft.id}</h3>
                 <p>Date: ${new Date(draft.savedAt).toLocaleString()}</p>
                 <p>Phase: ${draft.draftdata.current_phase}</p>
-                <button onclick="loadDraft('${draft.id}')">Load This Draft</button>
+                <button onclick="loadDraft('${
+                  draft.id
+                }')">Load This Draft</button>
                 <button onclick="deleteDraft('${draft.id}')">Delete</button>
             `;
-            container.appendChild(draftElement);
-        });
-    }
+      container.appendChild(draftElement);
+    });
+  }
 }
 
 // ============================================
@@ -55,22 +57,22 @@ async function displayDraftsInUI() {
 // ============================================
 
 async function loadDraft(draftId) {
-    try {
-        const response = await fetch(`/api/previous-drafts/${draftId}`);
-        const data = await response.json();
-        
-        if (data.success) {
-            const draft = data.draft;
-            
-            // Use the draft data to populate your UI
-            console.log('Loaded draft:', draft);
-            
-            // Example: Update your current draft display
-            // updateDraftDisplay(draft.draftdata);
-        }
-    } catch (error) {
-        console.error('Error loading draft:', error);
+  try {
+    const response = await fetch(`/api/previous-drafts/${draftId}`);
+    const data = await response.json();
+
+    if (data.success) {
+      const draft = data.draft;
+
+      // Use the draft data to populate your UI
+      console.log("Loaded draft:", draft);
+
+      // Example: Update your current draft display
+      // updateDraftDisplay(draft.draftdata);
     }
+  } catch (error) {
+    console.error("Error loading draft:", error);
+  }
 }
 
 // ============================================
@@ -78,24 +80,24 @@ async function loadDraft(draftId) {
 // ============================================
 
 async function deleteDraft(draftId) {
-    if (!confirm('Are you sure you want to delete this draft?')) {
-        return;
+  if (!confirm("Are you sure you want to delete this draft?")) {
+    return;
+  }
+
+  try {
+    const response = await fetch(`/api/previous-drafts/${draftId}`, {
+      method: "DELETE",
+    });
+    const data = await response.json();
+
+    if (data.success) {
+      alert("Draft deleted successfully");
+      // Refresh the list
+      displayDraftsInUI();
     }
-    
-    try {
-        const response = await fetch(`/api/previous-drafts/${draftId}`, {
-            method: 'DELETE'
-        });
-        const data = await response.json();
-        
-        if (data.success) {
-            alert('Draft deleted successfully');
-            // Refresh the list
-            displayDraftsInUI();
-        }
-    } catch (error) {
-        console.error('Error deleting draft:', error);
-    }
+  } catch (error) {
+    console.error("Error deleting draft:", error);
+  }
 }
 
 // ============================================
@@ -103,17 +105,17 @@ async function deleteDraft(draftId) {
 // ============================================
 
 async function compareDrafts(draftId1, draftId2) {
-    const [draft1, draft2] = await Promise.all([
-        fetch(`/api/previous-drafts/${draftId1}`).then(r => r.json()),
-        fetch(`/api/previous-drafts/${draftId2}`).then(r => r.json())
-    ]);
-    
-    if (draft1.success && draft2.success) {
-        console.log('Draft 1 Blue Picks:', draft1.draft.draftdata.blueside.pick);
-        console.log('Draft 2 Blue Picks:', draft2.draft.draftdata.blueside.pick);
-        
-        // Analyze differences, count common picks, etc.
-    }
+  const [draft1, draft2] = await Promise.all([
+    fetch(`/api/previous-drafts/${draftId1}`).then((r) => r.json()),
+    fetch(`/api/previous-drafts/${draftId2}`).then((r) => r.json()),
+  ]);
+
+  if (draft1.success && draft2.success) {
+    console.log("Draft 1 Blue Picks:", draft1.draft.draftdata.blueside.pick);
+    console.log("Draft 2 Blue Picks:", draft2.draft.draftdata.blueside.pick);
+
+    // Analyze differences, count common picks, etc.
+  }
 }
 
 // ============================================
@@ -197,14 +199,14 @@ const htmlExample = `
 
 // Add this to your draft controller to auto-save when draft ends
 async function autoSaveOnDraftComplete() {
-    // Check if draft is complete (all picks done)
-    const draftComplete = checkIfDraftComplete();
-    
-    if (draftComplete) {
-        // Auto-save to Firebase
-        await fetch('/api/archive-draft', { method: 'POST' });
-        console.log('Draft auto-saved to Firebase');
-    }
+  // Check if draft is complete (all picks done)
+  const draftComplete = checkIfDraftComplete();
+
+  if (draftComplete) {
+    // Auto-save to Firebase
+    await fetch("/api/archive-draft", { method: "POST" });
+    console.log("Draft auto-saved to Firebase");
+  }
 }
 
 // ============================================
@@ -212,20 +214,20 @@ async function autoSaveOnDraftComplete() {
 // ============================================
 
 async function exportAllDrafts() {
-    const response = await fetch('/api/previous-drafts?limit=1000');
-    const data = await response.json();
-    
-    if (data.success) {
-        // Create downloadable JSON file
-        const blob = new Blob([JSON.stringify(data.drafts, null, 2)], {
-            type: 'application/json'
-        });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `drafts-export-${Date.now()}.json`;
-        a.click();
-    }
+  const response = await fetch("/api/previous-drafts?limit=1000");
+  const data = await response.json();
+
+  if (data.success) {
+    // Create downloadable JSON file
+    const blob = new Blob([JSON.stringify(data.drafts, null, 2)], {
+      type: "application/json",
+    });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `drafts-export-${Date.now()}.json`;
+    a.click();
+  }
 }
 
 // ============================================
@@ -233,24 +235,24 @@ async function exportAllDrafts() {
 // ============================================
 
 async function findDraftsWithHero(heroName) {
-    const response = await fetch('/api/previous-drafts?limit=100');
-    const data = await response.json();
-    
-    if (data.success) {
-        const matchingDrafts = data.drafts.filter(draft => {
-            const allPicks = [
-                ...draft.draftdata.blueside.pick,
-                ...draft.draftdata.redside.pick
-            ];
-            
-            return allPicks.some(pick => 
-                pick.hero && pick.hero.includes(heroName.toLowerCase())
-            );
-        });
-        
-        console.log(`Found ${matchingDrafts.length} drafts with ${heroName}`);
-        return matchingDrafts;
-    }
+  const response = await fetch("/api/previous-drafts?limit=100");
+  const data = await response.json();
+
+  if (data.success) {
+    const matchingDrafts = data.drafts.filter((draft) => {
+      const allPicks = [
+        ...draft.draftdata.blueside.pick,
+        ...draft.draftdata.redside.pick,
+      ];
+
+      return allPicks.some(
+        (pick) => pick.hero && pick.hero.includes(heroName.toLowerCase())
+      );
+    });
+
+    console.log(`Found ${matchingDrafts.length} drafts with ${heroName}`);
+    return matchingDrafts;
+  }
 }
 
 // ============================================
@@ -258,45 +260,52 @@ async function findDraftsWithHero(heroName) {
 // ============================================
 
 async function getDraftStatistics() {
-    const response = await fetch('/api/previous-drafts?limit=100');
-    const data = await response.json();
-    
-    if (data.success) {
-        const stats = {
-            totalDrafts: data.drafts.length,
-            heroPickCount: {},
-            heroBanCount: {}
-        };
-        
-        data.drafts.forEach(draft => {
-            // Count picks
-            [...draft.draftdata.blueside.pick, ...draft.draftdata.redside.pick].forEach(pick => {
-                if (pick.hero) {
-                    const heroName = pick.hero.split('/').pop().replace('.png', '');
-                    stats.heroPickCount[heroName] = (stats.heroPickCount[heroName] || 0) + 1;
-                }
-            });
-            
-            // Count bans
-            [...draft.draftdata.blueside.ban, ...draft.draftdata.redside.ban].forEach(ban => {
-                if (ban.hero) {
-                    const heroName = ban.hero.split('/').pop().replace('.png', '');
-                    stats.heroBanCount[heroName] = (stats.heroBanCount[heroName] || 0) + 1;
-                }
-            });
-        });
-        
-        // Sort by most picked/banned
-        stats.mostPickedHeroes = Object.entries(stats.heroPickCount)
-            .sort((a, b) => b[1] - a[1])
-            .slice(0, 10);
-            
-        stats.mostBannedHeroes = Object.entries(stats.heroBanCount)
-            .sort((a, b) => b[1] - a[1])
-            .slice(0, 10);
-        
-        return stats;
-    }
+  const response = await fetch("/api/previous-drafts?limit=100");
+  const data = await response.json();
+
+  if (data.success) {
+    const stats = {
+      totalDrafts: data.drafts.length,
+      heroPickCount: {},
+      heroBanCount: {},
+    };
+
+    data.drafts.forEach((draft) => {
+      // Count picks
+      [
+        ...draft.draftdata.blueside.pick,
+        ...draft.draftdata.redside.pick,
+      ].forEach((pick) => {
+        if (pick.hero) {
+          const heroName = pick.hero.split("/").pop().replace(".png", "");
+          stats.heroPickCount[heroName] =
+            (stats.heroPickCount[heroName] || 0) + 1;
+        }
+      });
+
+      // Count bans
+      [...draft.draftdata.blueside.ban, ...draft.draftdata.redside.ban].forEach(
+        (ban) => {
+          if (ban.hero) {
+            const heroName = ban.hero.split("/").pop().replace(".png", "");
+            stats.heroBanCount[heroName] =
+              (stats.heroBanCount[heroName] || 0) + 1;
+          }
+        }
+      );
+    });
+
+    // Sort by most picked/banned
+    stats.mostPickedHeroes = Object.entries(stats.heroPickCount)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 10);
+
+    stats.mostBannedHeroes = Object.entries(stats.heroBanCount)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 10);
+
+    return stats;
+  }
 }
 
 // Usage:
