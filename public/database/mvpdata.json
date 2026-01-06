@@ -1,0 +1,21 @@
+{
+  "mvp": {
+    "checkboxId": "blueside-table-mvp-0",
+    "stats": {
+      "LVL": "12",
+      "KDA": "23/0/1",
+      "GOLD": "9000",
+      "SPELL": "Petrify",
+      "ITEM 1": "Haass Claws",
+      "ITEM 2": "Azure Blade",
+      "ITEM 3": "Blood Wings",
+      "ITEM 4": "Expert Gloves",
+      "ITEM 5": "Mystery Codex",
+      "ITEM 6": "Allow Throw"
+    },
+    "heroImg": "/Assets/HeroPick/aamon.png",
+    "nickname": "vii",
+    "playerPhoto": "Assets/player/vii.png",
+    "side": "blue"
+  }
+}

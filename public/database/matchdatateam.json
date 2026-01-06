@@ -1,0 +1,48 @@
+{
+  "teamdata": {
+    "blueteam": {
+      "teamname": "maru esports",
+      "score": "1",
+      "logo": "",
+      "playerlist": [
+        {
+          "name": "myco"
+        },
+        {
+          "name": ""
+        },
+        {
+          "name": ""
+        },
+        {
+          "name": ""
+        },
+        {
+          "name": ""
+        }
+      ]
+    },
+    "redteam": {
+      "teamname": "",
+      "score": "",
+      "logo": "",
+      "playerlist": [
+        {
+          "name": ""
+        },
+        {
+          "name": ""
+        },
+        {
+          "name": ""
+        },
+        {
+          "name": ""
+        },
+        {
+          "name": ""
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Postgame JSON Editor - Sharp UI</title>
+    <style>
+        @font-face { font-family: 'Big Noodle Titling'; src: url('Assets/Font/big_noodle_titling.ttf') format('truetype'); }
+        
+        :root { 
+            --background-color: #0D0F12; 
+            --card-color: #1A1C20; 
+            --font-color: #EAEAEA; 
+            --accent-color: #A855F7; 
+            --accent-glow: rgba(168, 85, 247, 0.25); 
+            --border-color: #3f3f46; 
+            --blue-side-accent: #00AFFF; 
+            --red-side-accent: #F94868; 
+            --active-color: #00FF8C; 
+            --blob-color-1: #9333ea; 
+            --blob-color-2: #27272A; 
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body { font-family: 'Big Noodle Titling', sans-serif; margin: 10px; background-color: var(--background-color); color: var(--font-color); overflow-x: hidden; position: relative; letter-spacing: 1.5px; }
+        
+        /* Background Blobs */
+        .blob-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; z-index: -1; filter: blur(100px); }
+        .blob { position: absolute; opacity: 0.4; }
+        .blob-1 { width: 400px; height: 400px; background: var(--blob-color-1); top: 10%; left: 10%; animation: blob-1-animation 20s infinite ease-in-out; }
+        .blob-2 { width: 500px; height: 500px; background: var(--blob-color-2); bottom: 5%; right: 5%; animation: blob-2-animation 25s infinite ease-in-out; }
+        
+        .container { max-width: 1600px; margin: 0 auto; padding: 10px; }
+        
+        /* Typography */
+        h1 { text-align: center; font-size: 2.5rem; color: var(--font-color); margin-bottom: 30px; text-shadow: 0 0 15px var(--accent-glow); }
+        h2 { font-size: 2rem; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid var(--border-color); }
+        
+        /* Sections */
+        .section { margin-bottom: 30px; padding: 15px; background-color: rgba(26, 28, 32, 0.8); border: 1px solid var(--border-color); box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); display: flex; flex-direction: column; gap: 20px; transition: all 0.3s ease; }
+        .team-blue h2 { color: var(--blue-side-accent); border-color: var(--blue-side-accent); }
+        .team-red h2 { color: var(--red-side-accent); border-color: var(--red-side-accent); }
+        .game-data h2 { color: var(--accent-color); border-color: var(--accent-color); }
+        .section-content { flex-grow: 1; overflow-x: auto; }
+        
+        /* Tables */
+        table { width: 100%; min-width: 800px; border-collapse: separate; border-spacing: 0 8px; }
+        th, td { padding: 10px 12px; text-align: left; vertical-align: middle; }
+        th { color: var(--font-color); font-weight: 600; text-transform: uppercase; font-size: 1.1rem; letter-spacing: 2px; }
+        td { background-color: #2a2d33; }
+        
+        /* Hero Picks (Images on top) */
+        .heropick { display: flex; flex-direction: row; justify-content: space-around; gap: 10px; margin-top: 0; order: -1; }
+        .image-box { width: 55px; height: 55px; overflow: hidden; border: 2px solid var(--border-color); transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; }
+        .image-box img { width: 80px; object-fit: contain; margin-top: 40px; }
+        .team-blue .image-box { border-color: var(--blue-side-accent); box-shadow: 0 0 10px rgba(0, 175, 255, 0.5); }
+        .team-red .image-box { border-color: var(--red-side-accent); box-shadow: 0 0 10px rgba(249, 72, 104, 0.5); }
+        
+        /* Inputs */
+        input[type="text"] { width: 100%; padding: 8px 10px; background-color: #33363d; border: 1px solid var(--border-color); color: var(--font-color); font-family: 'Big Noodle Titling', sans-serif; font-size: 1.1rem; letter-spacing: 1.5px; transition: all 0.3s ease; }
+        input[type="text"]:focus { outline: none; border-color: var(--accent-color); box-shadow: 0 0 0 3px var(--accent-glow); }
+        input[readonly] { background-color: #2a2d33; cursor: not-allowed; color: #888; }
+        
+        /* --- NEW CSS: TABLE ITEM SLOTS (IMAGES) --- */
+        td.is-item-cell { padding: 5px; vertical-align: middle; }
+        .table-item-slot {
+            width: 50px; height: 50px; margin: 0 auto;
+            background-color: #202225; border: 1px solid var(--border-color); border-radius: 8px;
+            cursor: pointer; overflow: hidden; display: flex; align-items: center; justify-content: center;
+            transition: all 0.2s ease; position: relative;
+        }
+        .table-item-slot:hover { border-color: var(--accent-color); box-shadow: 0 0 15px rgba(168, 85, 247, 0.4); transform: scale(1.05); }
+        .table-item-slot img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .table-item-slot.empty-slot { background-color: #1a1c20; border-style: dashed; }
+
+        /* Buttons */
+        .button-container { display: flex; flex-direction: column; align-items: center; gap: 15px; margin-top: 20px; }
+        .save-btn, .reset-btn { width: 100%; max-width: 300px; color: white; padding: 12px 20px; border: none; cursor: pointer; font-size: 1.1rem; font-weight: 600; transition: all 0.3s ease; text-transform: uppercase; letter-spacing: 2px; }
+        .save-btn { background-color: var(--active-color); box-shadow: 0 0 15px rgba(0, 255, 140, 0.4); }
+        .save-btn:hover { background-color: #00e67e; box-shadow: 0 0 25px rgba(0, 255, 140, 0.7); transform: translateY(-2px); }
+        .reset-btn { background-color: var(--red-side-accent); box-shadow: 0 0 15px rgba(249, 72, 104, 0.4); }
+        .reset-btn:hover { background-color: #e83a59; box-shadow: 0 0 25px rgba(249, 72, 104, 0.7); transform: translateY(-2px); }
+        
+        /* Logo */
+        .overlaytoollogo { text-align: center; margin-bottom: 30px; padding-top: 20px; }
+        .overlaytoollogo img { max-width: 100%; height: auto; }
+
+        /* --- NEW CSS: MODAL POPUP --- */
+        .modal-overlay {
+            display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%;
+            overflow: hidden; background-color: rgba(0, 0, 0, 0.85); backdrop-filter: blur(5px);
+            justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s ease;
+        }
+        .modal-overlay.show { display: flex; opacity: 1; }
+        .modal-content {
+            background-color: var(--card-color); border: 1px solid var(--border-color);
+            box-shadow: 0 0 30px rgba(168, 85, 247, 0.3); width: 90%; max-width: 1000px; max-height: 85vh;
+            border-radius: 12px; display: flex; flex-direction: column; padding: 20px; position: relative;
+            transform: scale(0.9); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .modal-overlay.show .modal-content { transform: scale(1); }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
+        .modal-header h2 { margin: 0; border: none; font-size: 1.8rem; color: var(--accent-color); }
+        .close-modal { background: none; border: none; color: #888; font-size: 2rem; cursor: pointer; transition: color 0.2s; }
+        .close-modal:hover { color: var(--red-side-accent); }
+        .modal-search { width: 100%; padding: 15px; font-size: 1.2rem; background-color: #0D0F12; border: 1px solid var(--border-color); color: white; border-radius: 8px; margin-bottom: 20px; font-family: 'Big Noodle Titling', sans-serif; letter-spacing: 1.5px; }
+        .modal-search:focus { border-color: var(--accent-color); outline: none; }
+        .item-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 15px; overflow-y: auto; padding-right: 10px; max-height: 60vh; }
+        .item-grid::-webkit-scrollbar { width: 8px; }
+        .item-grid::-webkit-scrollbar-track { background: #0D0F12; }
+        .item-grid::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 4px; }
+        .item-grid::-webkit-scrollbar-thumb:hover { background: var(--accent-color); }
+        .item-card {
+            background-color: #2a2d33; border: 1px solid transparent; border-radius: 8px; padding: 10px;
+            cursor: pointer; display: flex; flex-direction: column; align-items: center; text-align: center;
+            transition: all 0.2s ease;
+        }
+        .item-card:hover { background-color: #3f3f46; border-color: var(--accent-color); transform: translateY(-5px); box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
+        .item-card img { width: 60px; height: 60px; object-fit: contain; margin-bottom: 8px; }
+        .item-card span { font-size: 0.9rem; color: #ccc; line-height: 1.1; word-wrap: break-word; }
+
+        /* Responsive */
+        @media (min-width: 768px) { body { margin: 20px; } .container { padding: 20px; } h1 { font-size: 3.5rem; } h2 { font-size: 2.5rem; } .button-container { flex-direction: row; justify-content: center; gap: 20px; } .save-btn, .reset-btn { width: auto; max-width: none; padding: 12px 25px; } }
+        @media (min-width: 1200px) { .section { flex-direction: row; gap: 25px; } .heropick { flex-direction: column; justify-content: flex-start; gap: 0; margin-top: 100px; order: 0; } .image-box { width: 70px; height: 70px; } .image-box img { width: 100px; margin-top: 40px; } }
+    </style>
+</head>
+<body>
+
+    <div class="blob-container">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+    </div>
+
+    <div id="itemSelectionModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Select Item</h2>
+                <button class="close-modal" onclick="closeItemModal()">&times;</button>
+            </div>
+            <input type="text" id="itemSearchBox" class="modal-search" placeholder="Search Item or Spell..." onkeyup="filterItems(this.value)" autocomplete="off">
+            <div id="itemGridContainer" class="item-grid">
+                </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <h1>Postgame JSON Editor</h1>
+        
+        <div class="section team-blue">
+            <div class="heropick">
+                <div id="image-box-1" class="image-box"><img id="image-display-1" src=""></div>
+                <div id="image-box-2" class="image-box"><img id="image-display-2" src=""></div>
+                <div id="image-box-3" class="image-box"><img id="image-display-3" src=""></div>
+                <div id="image-box-4" class="image-box"><img id="image-display-4" src=""></div>
+                <div id="image-box-5" class="image-box"><img id="image-display-5" src=""></div>
+            </div>
+            <div class="section-content">
+                <h2>Blue Side</h2>
+                <table id="blueside-table">
+                    <thead>
+                        <tr>
+                            <th>LVL</th>
+                            <th>KDA</th>
+                            <th>GOLD</th>
+                            <th>SPELL</th>
+                            <th>ITEM 1</th>
+                            <th>ITEM 2</th>
+                            <th>ITEM 3</th>
+                            <th>ITEM 4</th>
+                            <th>ITEM 5</th>
+                            <th>ITEM 6</th>
+                            <th>MVP</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="section team-red">
+             <div class="heropick">
+                <div id="image-box-6" class="image-box"><img id="image-display-6" src=""></div>
+                <div id="image-box-7" class="image-box"><img id="image-display-7" src=""></div>
+                <div id="image-box-8" class="image-box"><img id="image-display-8" src=""></div>
+                <div id="image-box-9" class="image-box"><img id="image-display-9" src=""></div>
+                <div id="image-box-10" class="image-box"><img id="image-display-10" src=""></div>
+            </div>
+            <div class="section-content">
+                <h2>Red Side</h2>
+                <table id="redside-table">
+                    <thead>
+                        <tr>
+                            <th>LVL</th>
+                            <th>KDA</th>
+                            <th>GOLD</th>
+                            <th>SPELL</th>
+                            <th>ITEM 1</th>
+                            <th>ITEM 2</th>
+                            <th>ITEM 3</th>
+                            <th>ITEM 4</th>
+                            <th>ITEM 5</th>
+                            <th>ITEM 6</th>
+                            <th>MVP</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="section game-data">
+            <div class="section-content">
+                <h2>Game Data</h2>
+                <table id="gamedata-table">
+                    <thead>
+                        <tr>
+                            <th>Row</th>
+                            <th>Stats</th>
+                            <th>Number</th>
+                            <th>Misc</th>
+                            <th>SPELL</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+        
+        <div class="button-container">
+            <button class="reset-btn" onclick="resetItems()">Reset Items</button>
+            <button class="save-btn" onclick="saveJson()">Save to JSON</button>
+        </div>
+    </div>
+
+    <div class="overlaytoollogo">
+            <img src="Assets/Other/OVERLAYTOOLLOGO.png" alt="">
+        </div>
+    
+    <audio id="hero-voice" muted></audio>
+
+<script>
+    let jsonData = [];
+    let items = [];
+    let matchData = {}; 
+    let draftData = {}; 
+    let currentMvpId = null; 
+    let currentEditingContext = null; // Menyimpan konteks sel yang sedang diedit
+
+    const ws = new WebSocket(`ws://${window.location.host}`);
+
+    Promise.all([
+        fetch('/api/postgame').then(response => response.json()),
+        fetch('/database/items.json').then(response => response.json()),
+        fetch('/api/matchdata').then(response => response.json()), 
+        fetch('/api/matchdraft').then(response => response.json()), 
+        fetch('/api/mvp').then(response => response.json()) 
+    ])
+    .then(([postgameData, itemsData, matchDataRes, draftDataRes, mvpDataRes]) => {
+        jsonData = postgameData;
+        items = itemsData;
+        matchData = matchDataRes;
+        draftData = draftDataRes;
+
+        if (mvpDataRes && mvpDataRes.mvp && mvpDataRes.mvp.checkboxId) {
+            currentMvpId = mvpDataRes.mvp.checkboxId;
+        }
+
+        renderTables();
+        updateSharedStorage();
+    })
+    .catch(error => console.error('Error loading data:', error));
+
+    ws.onopen = () => console.log('Connected to WebSocket server');
+    ws.onmessage = (event) => {
+        const msg = JSON.parse(event.data);
+        if (msg.type === 'update' && msg.data.postgame) {
+            jsonData = msg.data.postgame;
+            renderTables();
+        }
+        if (msg.type === 'draftdata_update') {
+             fetch('/api/matchdraft').then(r => r.json()).then(d => draftData = d);
+        }
+        if (msg.type === 'matchdata_update') {
+             fetch('/api/matchdata').then(r => r.json()).then(d => matchData = d);
+        }
+    };
+    ws.onclose = () => console.log('Disconnected from WebSocket server');
+
+    function calculateTotalGold(sideData) {
+        return sideData.reduce((sum, row) => {
+            const gold = parseInt(row.GOLD) || 0;
+            return sum + gold;
+        }, 0);
+    }
+
+    function renderTables() {
+        const blueside = jsonData.slice(0, 5);
+        const redside = jsonData.slice(6, 11);
+        const gamedata = jsonData.slice(12, 21);
+
+        jsonData[12].KDA = calculateTotalGold(blueside).toString();
+        jsonData[16].KDA = calculateTotalGold(redside).toString();
+
+        renderTable(blueside, 'blueside-table', ['LVL', 'KDA', 'GOLD', 'SPELL', 'ITEM 1', 'ITEM 2', 'ITEM 3', 'ITEM 4', 'ITEM 5', 'ITEM 6']);
+        renderTable(redside, 'redside-table', ['LVL', 'KDA', 'GOLD', 'SPELL', 'ITEM 1', 'ITEM 2', 'ITEM 3', 'ITEM 4', 'ITEM 5', 'ITEM 6']);
+        renderTable(gamedata, 'gamedata-table', ['LVL', 'KDA', 'GOLD', 'SPELL']);
+    }
+    
+    function renderTable(data, tableId, fields) {
+        const tbody = document.getElementById(tableId).querySelector('tbody');
+        tbody.innerHTML = '';
+
+        data.forEach((row, index) => {
+            const tr = document.createElement('tr');
+            let rowHtml = '';
+
+            if (tableId === 'gamedata-table') {
+                rowHtml += `<td>${row.LVL || ''}</td>`;
+            }
+            
+            fields.forEach(field => {
+                if (tableId === 'gamedata-table' && field === 'LVL') return;
+
+                // Handle Input Text Biasa (KDA, GOLD, LVL)
+                if ((tableId === 'gamedata-table' && field === 'KDA' && (index === 0 || index === 4)) || (field === 'KDA' && row[field] === "PURPLE MEAN DON’T EDIT")) {
+                    rowHtml += `<td><input type="text" value="${row[field] || ''}" readonly></td>`;
+                } 
+                // Handle SPELL & ITEM (Display Image)
+                else if (['SPELL', 'ITEM 1', 'ITEM 2', 'ITEM 3', 'ITEM 4', 'ITEM 5', 'ITEM 6'].includes(field) && tableId !== 'gamedata-table') {
+                    const itemName = row[field];
+                    let imgSrc;
+                    let isEmpty = false;
+
+                    if (!itemName) {
+                        imgSrc = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'; // Transparan
+                        isEmpty = true;
+                    } else {
+                        imgSrc = `Assets/itemandspell/${encodeURIComponent(itemName)}.png`;
+                    }
+                    const errorSrc = 'Assets/Other/no-image.png';
+
+                    rowHtml += `
+                        <td class="is-item-cell">
+                            <div class="table-item-slot ${isEmpty ? 'empty-slot' : ''}" 
+                                 onclick="openItemModal(${index}, '${field}', '${tableId}')" 
+                                 title="${itemName || 'Empty Slot'}">
+                                <img src="${imgSrc}" 
+                                     alt="${itemName || 'Empty'}" 
+                                     onerror="this.src='${errorSrc}'; this.parentElement.classList.add('empty-slot');">
+                            </div>
+                        </td>`;
+                } 
+                // Input Text Biasa yang bisa diedit
+                else {
+                    rowHtml += `<td><input type="text" value="${row[field] || ''}" onchange="updateJson(${index}, '${field}', this.value, '${tableId}')"></td>`;
+                }
+            });
+
+            if (tableId === 'blueside-table' || tableId === 'redside-table') {
+                const checkboxId = `${tableId}-mvp-${index}`;
+                const isChecked = (currentMvpId === checkboxId);
+                rowHtml += `
+                    <td>
+                        <input type="checkbox" id="${checkboxId}" class="mvp-checkbox" 
+                               data-index="${index}" data-tableid="${tableId}" 
+                               onchange="handleMvpCheck(this)" ${isChecked ? 'checked' : ''}
+                               style="transform: scale(1.5); cursor: pointer;">
+                    </td>`;
+            }
+
+            tr.innerHTML = rowHtml;
+            tbody.appendChild(tr);
+        });
+        
+        if (tableId === 'gamedata-table') {
+            const headers = document.getElementById(tableId).querySelectorAll('thead th');
+            if(headers[0]) headers[0].textContent = 'Statistic';
+            if(headers[1]) headers[1].textContent = 'Blue Side';
+            if(headers[2]) headers[2].textContent = 'Red Side';
+            if(headers[3]) headers[3].textContent = 'Misc';
+            if (headers.length > 4) headers[4].textContent = 'Spell/Objective';
+        }
+    }
+
+    // ======================================================= //
+    // =========== MODAL & ITEM GRID LOGIC =================== //
+    // ======================================================= //
+
+    function openItemModal(index, field, tableId) {
+        currentEditingContext = { index, field, tableId };
+        document.getElementById('itemSearchBox').value = '';
+        document.getElementById('itemSearchBox').focus();
+        document.getElementById('modalTitle').textContent = `Select ${field}`;
+        renderItemGrid(''); 
+        
+        const modal = document.getElementById('itemSelectionModal');
+        modal.classList.add('show');
+        setTimeout(() => document.getElementById('itemSearchBox').focus(), 100);
+    }
+
+    function closeItemModal() {
+        document.getElementById('itemSelectionModal').classList.remove('show');
+        currentEditingContext = null;
+    }
+
+    function renderItemGrid(filterText) {
+        const container = document.getElementById('itemGridContainer');
+        container.innerHTML = ''; 
+
+        const search = filterText.toLowerCase();
+        const filteredItems = items.filter(item => item.toLowerCase().includes(search));
+
+        // Tombol Empty / Clear
+        const clearDiv = document.createElement('div');
+        clearDiv.className = 'item-card';
+        clearDiv.innerHTML = `
+            <div style="width:60px; height:60px; display:flex; align-items:center; justify-content:center; background:#444; border-radius:50%; margin-bottom:8px;">
+                <span style="font-size:20px; color:#fff;">&times;</span>
+            </div>
+            <span>NONE</span>
+        `;
+        clearDiv.onclick = () => selectItemFromModal('');
+        container.appendChild(clearDiv);
+
+        filteredItems.forEach(item => {
+            const div = document.createElement('div');
+            div.className = 'item-card';
+            const imgSrc = `Assets/itemandspell/${item}.png`; 
+            
+            div.innerHTML = `
+                <img src="${imgSrc}" alt="${item}" onerror="this.src='Assets/Other/no-image.png'">
+                <span>${item}</span>
+            `;
+            div.onclick = () => selectItemFromModal(item);
+            container.appendChild(div);
+        });
+    }
+
+    function filterItems(text) {
+        renderItemGrid(text);
+    }
+
+    function selectItemFromModal(value) {
+        if (!currentEditingContext) return;
+        const { index, field, tableId } = currentEditingContext;
+        updateJson(index, field, value, tableId);
+        closeItemModal();
+    }
+
+    window.onclick = function(event) {
+        const modal = document.getElementById('itemSelectionModal');
+        if (event.target === modal) closeItemModal();
+    }
+
+    document.addEventListener('keydown', function(event) {
+        if (event.key === "Escape") closeItemModal();
+    });
+
+    // ======================================================= //
+    // =========== MVP & DATA HANDLING ======================= //
+    // ======================================================= //
+
+    function handleMvpCheck(checkbox) {
+        const allCheckboxes = document.querySelectorAll('.mvp-checkbox');
+        allCheckboxes.forEach(cb => {
+            if (cb !== checkbox) cb.checked = false;
+        });
+
+        if (checkbox.checked) {
+            currentMvpId = checkbox.id;
+            const index = parseInt(checkbox.dataset.index);
+            const tableId = checkbox.dataset.tableid;
+            let jsonIndex, heroImgSrc, nickname, side;
+            
+            if (tableId === 'blueside-table') {
+                side = 'blue';
+                jsonIndex = index;
+                if (matchData.teamdata?.blueteam?.playerlist?.[index]) nickname = matchData.teamdata.blueteam.playerlist[index].name;
+                if (draftData.draftdata?.blueside?.pick?.[index]) heroImgSrc = draftData.draftdata.blueside.pick[index].hero;
+            } else {
+                side = 'red';
+                jsonIndex = index + 6;
+                if (matchData.teamdata?.redteam?.playerlist?.[index]) nickname = matchData.teamdata.redteam.playerlist[index].name;
+                if (draftData.draftdata?.redside?.pick?.[index]) heroImgSrc = draftData.draftdata.redside.pick[index].hero;
+            }
+
+            const playerStats = jsonData[jsonIndex];
+            const mvpPayload = {
+                mvp: {
+                    checkboxId: checkbox.id,
+                    stats: {
+                        LVL: playerStats.LVL, KDA: playerStats.KDA, GOLD: playerStats.GOLD, SPELL: playerStats.SPELL,
+                        'ITEM 1': playerStats['ITEM 1'], 'ITEM 2': playerStats['ITEM 2'], 'ITEM 3': playerStats['ITEM 3'],
+                        'ITEM 4': playerStats['ITEM 4'], 'ITEM 5': playerStats['ITEM 5'], 'ITEM 6': playerStats['ITEM 6'],
+                    },
+                    heroImg: heroImgSrc || '',
+                    nickname: nickname || 'Unknown',
+                    playerPhoto: nickname ? `Assets/player/${nickname}.png` : 'Assets/player/noplayer.png',
+                    side: side
+                }
+            };
+
+            fetch('/api/mvp', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(mvpPayload)
+            }).then(res => res.json()).then(d => console.log('MVP Saved:', d));
+
+        } else {
+            currentMvpId = null;
+            fetch('/api/mvp', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ mvp: null })
+            }).then(res => res.json()).then(d => console.log('MVP Cleared:', d));
+        }
+    }
+
+    function updateJson(index, field, value, tableId) {
+        if (tableId === 'blueside-table') jsonData[index][field] = value;
+        else if (tableId === 'redside-table') jsonData[index + 6][field] = value;
+        else if (tableId === 'gamedata-table') jsonData[index + 12][field] = value;
+        
+        renderTables();
+        updateSharedStorage();
+    }
+
+    function resetItems() {
+        const itemFields = ['ITEM 1', 'ITEM 2', 'ITEM 3', 'ITEM 4', 'ITEM 5', 'ITEM 6'];
+        for (let i = 0; i <= 4; i++) itemFields.forEach(field => jsonData[i][field] = '');
+        for (let i = 6; i <= 10; i++) itemFields.forEach(field => jsonData[i][field] = '');
+        renderTables();
+        updateSharedStorage();
+    }
+
+    function updateSharedStorage() {
+        ws.send(JSON.stringify({ type: 'update', data: { postgame: jsonData } }));
+    }
+
+    function saveJson() {
+        fetch('/api/postgame', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(jsonData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert(data.message);
+            updateSharedStorage();
+        })
+        .catch(error => console.error('Error saving JSON:', error));
+    }
+</script>
+
+    <script src="script/herodisplayisolated.js"></script>
+    <script src="crosshost.js"></script>
+</body>
+</html>

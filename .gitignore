@@ -1,0 +1,25 @@
+# Firebase credentials - NEVER commit this file!
+serviceAccountKey.json
+
+# Node modules
+node_modules/
+
+# Environment variables
+.env
+.env.local
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor directories
+.vscode/
+.idea/
+
+# Temporary files
+*.tmp
+*.temp

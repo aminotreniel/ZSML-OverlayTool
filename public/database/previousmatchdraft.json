@@ -1,0 +1,80 @@
+{
+  "draftdata": {
+    "timer": "60",
+    "timerRunning": false,
+    "current_phase": 17,
+    "blueside": {
+      "ban": [
+        {
+          "hero": "/Assets/HeroPick/aldous.png"
+        },
+        {
+          "hero": "/Assets/HeroPick/argus.png"
+        },
+        {
+          "hero": "/Assets/HeroPick/chip.png"
+        },
+        {
+          "hero": "/Assets/HeroPick/pharsa.png"
+        },
+        {
+          "hero": "/Assets/HeroPick/benedetta.png"
+        }
+      ],
+      "pick": [
+        {
+          "hero": "/Assets/HeroPick/gatotkaca.png"
+        },
+        {
+          "hero": "/Assets/HeroPick/balmond.png"
+        },
+        {
+          "hero": "/Assets/HeroPick/balmond.png"
+        },
+        {
+          "hero": "/Assets/HeroPick/silvanna.png"
+        },
+        {
+          "hero": "/Assets/HeroPick/julian.png"
+        }
+      ]
+    },
+    "redside": {
+      "ban": [
+        {
+          "hero": "/Assets/HeroPick/argus.png"
+        },
+        {
+          "hero": "/Assets/HeroPick/chang_e.png"
+        },
+        {
+          "hero": "/Assets/HeroPick/lancelot.png"
+        },
+        {
+          "hero": "/Assets/HeroPick/aamon.png"
+        },
+        {
+          "hero": "/Assets/HeroPick/melissa.png"
+        }
+      ],
+      "pick": [
+        {
+          "hero": "/Assets/HeroPick/jawhead.png"
+        },
+        {
+          "hero": "/Assets/HeroPick/akai.png"
+        },
+        {
+          "hero": "/Assets/HeroPick/baxia.png"
+        },
+        {
+          "hero": "/Assets/HeroPick/fanny.png"
+        },
+        {
+          "hero": "/Assets/HeroPick/baxia.png"
+        }
+      ]
+    },
+    "timer_running": true
+  }
+}

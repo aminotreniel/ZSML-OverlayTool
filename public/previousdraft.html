@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Previous Draft Analyzer</title>
+    <style>
+        @font-face {
+            font-family: 'myfonts';
+            src: url('Assets/Font/big_noodle_titling.ttf') format('truetype');
+            font-weight: normal; font-style: normal;
+        }
+
+        :root {
+            --bg-body: #1a1a1a;
+            --bg-hero: #3a3a3a;
+            
+            /* WARNA STATUS */
+            --c-repick: #00ff00;    /* Hijau */
+            --c-stolen: #FFD700;    /* Emas */
+            --c-banned: #ff0000;    /* Merah */
+            --c-rebanned: #8B0000;  /* Merah Gelap */
+            --c-picked-now: #21c460; 
+        }
+
+        body {
+            font-family: 'myfonts', sans-serif;
+            color: #ffffff;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center; justify-content: center;
+            height: 1080px; width: 1920px;
+            overflow: hidden;
+        }
+
+        .mainbox {
+            width: 1920px; height: 1080px;
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        .ghostbox { width: 950px; } 
+
+        /* CONTAINER TIM */
+        .camp {
+            width: 460px; height: 180px;
+   
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+            background-color: var(--bg-body);
+            border-radius: 0; 
+            color: #fff;
+            transition: all 0.5s ease;
+        }
+
+        .picks, .bans {
+            display: flex; gap: 10px;
+            align-items: center; justify-content: center;
+        }
+
+        .picks { height: 100px; margin-bottom: 5px; }
+        .bans { height: 50px; margin-top: 5px; opacity: 0.9; }
+
+        /* === KARTU HERO (CONTAINER) === */
+        /* UKURAN BOX TETAP (Tidak ada Transform Scale disini) */
+        .hero {
+            width: 80px; height: 100%;
+            display: flex; align-items: center; justify-content: center;
+            background-color: var(--bg-hero);
+            position: relative; 
+            overflow: hidden; /* Gambar di dalam tidak boleh keluar */
+            border-radius: 0;
+            
+            /* Hanya transisi Border & Shadow */
+            transition: border-color 0.4s ease, box-shadow 0.4s ease;
+        }
+        
+        .bans .hero { width: 80px; }
+
+        /* === GAMBAR HERO (YANG AKAN DI-ZOOM) === */
+        .hero img {
+            width: 100%; height: auto; object-fit: cover; margin-top: 30px ;
+            
+            /* Default Scale sedikit di-zoom agar pas */
+            transform: scale(1.15);
+            
+            /* Transisi Halus untuk Scale & Filter */
+            transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), filter 0.8s ease;
+        }
+
+        /* Default: Ban Hitam Putih, Pick Berwarna */
+        .bans .hero img { filter: grayscale(100%); }
+        .picks .hero img { filter: grayscale(0%); }
+
+
+        /* === ANIMASI LABEL === */
+        .hero::after {
+            content: attr(data-label);
+            position: absolute; bottom: 0; width: 100%;
+            padding: 4px 0;
+            background-color: rgba(0, 0, 0, 0.95);
+            font-size: 10px; 
+            text-align: center; letter-spacing: 2px;
+            font-weight: normal; 
+            
+            transform: translateY(101%);
+            opacity: 0;
+            transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.6s ease;
+        }
+
+        /* === LOGIC STATUS (ACTIVE) === */
+        
+        /* 1. RE-PICKED */
+        .hero.re-picked { 
+            border-color: var(--c-repick); 
+            box-shadow: 0 0 20px var(--c-repick);
+            z-index: 10;
+        }
+        .hero.re-picked::after { 
+            background-color: var(--c-repick); color: #000; 
+            transform: translateY(0); opacity: 1;
+        }
+        /* Zoom gambar di dalam */
+        .hero.re-picked img { transform: scale(1.35); }
+
+
+        /* 2. STOLEN */
+        .hero.stolen { 
+            border-color: var(--c-stolen); 
+            box-shadow: 0 0 20px var(--c-stolen);
+            z-index: 10;
+        }
+        .hero.stolen::after { 
+            background-color: var(--c-stolen); color: #000; 
+            transform: translateY(0); opacity: 1;
+        }
+        /* Zoom gambar di dalam */
+        .hero.stolen img { transform: scale(1.35); }
+
+
+        /* 3. BANNED NOW (Pick -> Ban) */
+        .hero.banned-now { 
+            border-color: var(--c-banned); 
+            box-shadow: 0 0 25px var(--c-banned);
+            z-index: 10;
+        }
+        .hero.banned-now::after { 
+            background-color: var(--c-banned); color: #fff; 
+            transform: translateY(0); opacity: 1;
+        }
+        /* Logic: Gambar jadi Hitam Putih & Mundur (Recoil) */
+        .hero.banned-now img { 
+            filter: grayscale(100%) !important; 
+            transform: scale(1.0); /* Lebih kecil dari default 1.15 */
+            opacity: 0.7;
+        }
+
+
+        /* 4. RE-BANNED */
+        .hero.re-banned { 
+            border-color: var(--c-rebanned); 
+            box-shadow: 0 0 20px var(--c-rebanned);
+            z-index: 10;
+        }
+        .hero.re-banned::after { 
+            background-color: var(--c-rebanned); color: #fff; 
+            transform: translateY(0); opacity: 1;
+        }
+
+
+        /* 5. PICKED NOW (Ban -> Pick) */
+        .hero.picked-now { 
+            border-color: var(--c-picked-now); 
+            box-shadow: 0 0 25px var(--c-picked-now);
+            z-index: 10;
+        }
+        .hero.picked-now::after { 
+            background-color: var(--c-picked-now); color: #000; 
+            transform: translateY(0); opacity: 1;
+        }
+        /* Logic: Gambar jadi Berwarna & Zoom Besar */
+        .bans .hero.picked-now img { 
+            filter: grayscale(0%) !important; 
+            transform: scale(1.35) !important;
+        }
+
+        /* Hover Effect (Opsional, hanya zoom gambar) */
+        .hero:hover img { transform: scale(1.25); }
+
+    </style>
+</head>
+<body>
+
+    <div class="mainbox">
+        <div class="camp" id="camp1">
+            <div class="picks" id="camp1-picks"></div>
+            <div class="bans" id="camp1-bans"></div>
+        </div>
+
+        <div class="ghostbox"></div>
+
+        <div class="camp" id="camp2">
+            <div class="picks" id="camp2-picks"></div>
+            <div class="bans" id="camp2-bans"></div>
+        </div>
+    </div>
+
+    <script>
+        // --- STATE ---
+        let previousDraft = null;   
+        let currentDraft = null;    
+        
+        let isCampSwapped = false;  
+        let isDataSwapped = false;  
+
+        const ws = new WebSocket('ws://' + window.location.host);
+
+        // --- FETCH DATA ---
+        async function fetchAllData() {
+            try {
+                const prevRes = await fetch('/api/previousdraft');
+                const prevJson = await prevRes.json();
+                previousDraft = prevJson.draftdata;
+                await fetchCurrentData();
+            } catch (e) { console.error("Error fetching data:", e); }
+        }
+
+        async function fetchCurrentData() {
+            try {
+                const res = await fetch('/api/matchdraft');
+                const json = await res.json();
+                currentDraft = json.draftdata;
+                renderAll();
+            } catch (e) { console.error("Error fetching current draft:", e); }
+        }
+
+        ws.onmessage = (event) => {
+            const msg = JSON.parse(event.data);
+            if (msg.type === 'draftdata_update') { fetchCurrentData(); }
+            else if (msg.type === 'analyzer_update') { fetchAllData(); }
+            else if (msg.type === 'analyzer_control') {
+                if (msg.action === 'switch_camp') {
+                    isCampSwapped = !isCampSwapped;
+                    document.querySelector('.mainbox').style.flexDirection = isCampSwapped ? 'row-reverse' : 'row';
+                }
+                else if (msg.action === 'switch_data') {
+                    isDataSwapped = !isDataSwapped;
+                    renderAll(true); 
+                }
+            }
+        };
+
+        // --- CORE LOGIC ---
+        function renderAll(forceRebuild = false) {
+            if (!currentDraft || !previousDraft) return;
+
+            // 1. DATA DISPLAY (PREVIOUS)
+            let displayCamp1 = previousDraft.blueside;
+            let displayCamp2 = previousDraft.redside;
+
+            if (isDataSwapped) {
+                [displayCamp1, displayCamp2] = [displayCamp2, displayCamp1];
+            }
+
+            // 2. DATA LOGIC (CURRENT)
+            const currLeftPicks = currentDraft.blueside.pick.map(h => h.hero).filter(h => h);
+            const currRightPicks = currentDraft.redside.pick.map(h => h.hero).filter(h => h);
+            const currAllPicks = [...currLeftPicks, ...currRightPicks];
+            const currAllBans = [
+                ...currentDraft.blueside.ban.map(h => h.hero),
+                ...currentDraft.redside.ban.map(h => h.hero)
+            ].filter(h => h);
+
+            // 3. UPDATE DOM
+            updateHeroRow('camp1-picks', displayCamp1.pick, 'pick', currLeftPicks, currRightPicks, currAllBans, currAllPicks, forceRebuild);
+            updateHeroRow('camp1-bans', displayCamp1.ban, 'ban', [], [], currAllBans, currAllPicks, forceRebuild);
+
+            updateHeroRow('camp2-picks', displayCamp2.pick, 'pick', currRightPicks, currLeftPicks, currAllBans, currAllPicks, forceRebuild);
+            updateHeroRow('camp2-bans', displayCamp2.ban, 'ban', [], [], currAllBans, currAllPicks, forceRebuild);
+        }
+
+        function updateHeroRow(containerId, heroList, type, listRePick, listStolen, listBanned, listAllPicks, forceRebuild) {
+            const container = document.getElementById(containerId);
+            
+            // Rebuild if needed
+            if (forceRebuild || container.children.length === 0 || container.children.length !== heroList.length) {
+                container.innerHTML = '';
+                heroList.forEach(slot => {
+                    const card = document.createElement('div');
+                    card.className = 'hero';
+                    if (slot.hero) {
+                        const img = document.createElement('img');
+                        img.src = slot.hero;
+                        img.onerror = function() { this.style.display = 'none'; };
+                        card.appendChild(img);
+                    }
+                    container.appendChild(card);
+                });
+            }
+
+            // Update Status
+            const cards = container.children;
+            
+            heroList.forEach((slot, index) => {
+                if (index >= cards.length) return;
+                const card = cards[index];
+                const heroName = slot.hero;
+
+                if (!heroName) {
+                    card.className = 'hero';
+                    card.removeAttribute('data-label');
+                    return;
+                }
+
+                let newClass = '';
+                let newLabel = '';
+
+                if (type === 'pick') {
+                    if (listRePick.includes(heroName)) {
+                        newClass = 're-picked'; newLabel = 'RE-PICKED';
+                    } 
+                    else if (listStolen.includes(heroName)) {
+                        newClass = 'stolen'; newLabel = 'STOLEN';
+                    }
+                    else if (listBanned.includes(heroName)) {
+                        newClass = 'banned-now'; newLabel = 'BANNED NOW';
+                    }
+                } 
+                else if (type === 'ban') {
+                    if (listBanned.includes(heroName)) {
+                        newClass = 're-banned'; newLabel = 'RE-BANNED';
+                    }
+                    else if (listAllPicks.includes(heroName)) {
+                        newClass = 'picked-now'; newLabel = 'PICKED';
+                    }
+                }
+
+                // Apply changes
+                card.className = 'hero'; 
+                if (newClass) {
+                    if (!card.classList.contains(newClass)) {
+                        card.classList.add(newClass);
+                        card.setAttribute('data-label', newLabel);
+                    }
+                } else {
+                     card.removeAttribute('data-label');
+                }
+            });
+        }
+
+        fetchAllData();
+
+    </script>
+</body>
+</html>
