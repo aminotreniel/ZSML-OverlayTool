@@ -26,6 +26,11 @@ app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 app.use(express.static("public"));
 
+// Redirect root to control.html
+app.get("/", (req, res) => {
+  res.redirect("/control.html");
+});
+
 // ==========================================
 // PERSIAPAN FOLDER & FILE DATABASE
 // ==========================================
@@ -297,13 +302,11 @@ app.get("/api/match-drafts", async (req, res) => {
     res.json({ success: true, drafts: drafts, count: drafts.length });
   } catch (error) {
     console.error(error);
-    res
-      .status(500)
-      .json({
-        success: false,
-        message: "Error fetching drafts from Firebase",
-        error: error.message,
-      });
+    res.status(500).json({
+      success: false,
+      message: "Error fetching drafts from Firebase",
+      error: error.message,
+    });
   }
 });
 
@@ -320,13 +323,11 @@ app.get("/api/match-drafts/:draftId", async (req, res) => {
     }
   } catch (error) {
     console.error(error);
-    res
-      .status(500)
-      .json({
-        success: false,
-        message: "Error fetching draft",
-        error: error.message,
-      });
+    res.status(500).json({
+      success: false,
+      message: "Error fetching draft",
+      error: error.message,
+    });
   }
 });
 
@@ -338,13 +339,11 @@ app.delete("/api/match-drafts/:draftId", async (req, res) => {
     res.json(result);
   } catch (error) {
     console.error(error);
-    res
-      .status(500)
-      .json({
-        success: false,
-        message: "Error deleting draft",
-        error: error.message,
-      });
+    res.status(500).json({
+      success: false,
+      message: "Error deleting draft",
+      error: error.message,
+    });
   }
 });
 

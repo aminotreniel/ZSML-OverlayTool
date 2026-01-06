@@ -2,76 +2,76 @@
   "draftdata": {
     "timer": "60",
     "timerRunning": false,
-    "current_phase": 18,
+    "current_phase": 6,
     "blueside": {
       "ban": [
         {
-          "hero": "/Assets/HeroPick/aldous.png"
+          "hero": "/Assets/HeroPick/aamon.png"
         },
         {
-          "hero": "/Assets/HeroPick/jawhead.png"
+          "hero": "/Assets/HeroPick/argus.png"
         },
         {
-          "hero": "/Assets/HeroPick/gatotkaca.png"
+          "hero": "/Assets/HeroPick/paquito.png"
         },
         {
-          "hero": "/Assets/HeroPick/pharsa.png"
+          "hero": ""
         },
         {
-          "hero": "/Assets/HeroPick/benedetta.png"
+          "hero": ""
         }
       ],
       "pick": [
         {
-          "hero": "/Assets/HeroPick/chip.png"
+          "hero": ""
         },
         {
-          "hero": "/Assets/HeroPick/balmond.png"
+          "hero": ""
         },
         {
-          "hero": "/Assets/HeroPick/balmond.png"
+          "hero": ""
         },
         {
-          "hero": "/Assets/HeroPick/silvanna.png"
+          "hero": ""
         },
         {
-          "hero": "/Assets/HeroPick/julian.png"
+          "hero": ""
         }
       ]
     },
     "redside": {
       "ban": [
         {
-          "hero": "/Assets/HeroPick/argus.png"
+          "hero": "/Assets/HeroPick/aldous.png"
         },
         {
-          "hero": "/Assets/HeroPick/chang_e.png"
+          "hero": "/Assets/HeroPick/badang.png"
         },
         {
-          "hero": "/Assets/HeroPick/lancelot.png"
+          "hero": "/Assets/HeroPick/ixia.png"
         },
         {
-          "hero": "/Assets/HeroPick/aamon.png"
+          "hero": ""
         },
         {
-          "hero": "/Assets/HeroPick/melissa.png"
+          "hero": ""
         }
       ],
       "pick": [
         {
-          "hero": "/Assets/HeroPick/argus.png"
+          "hero": ""
         },
         {
-          "hero": "/Assets/HeroPick/akai.png"
+          "hero": ""
         },
         {
-          "hero": "/Assets/HeroPick/baxia.png"
+          "hero": ""
         },
         {
-          "hero": "/Assets/HeroPick/fanny.png"
+          "hero": ""
         },
         {
-          "hero": "/Assets/HeroPick/hylos.png"
+          "hero": ""
         }
       ]
     },

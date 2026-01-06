@@ -1,8 +1,8 @@
 {
   "teamdata": {
     "blueteam": {
-      "teamname": "",
-      "score": "",
+      "teamname": "Biru Esports",
+      "score": "1",
       "logo": "",
       "playerlist": [
         {
@@ -23,8 +23,8 @@
       ]
     },
     "redteam": {
-      "teamname": "",
-      "score": "",
+      "teamname": "Asur Esports",
+      "score": "1",
       "logo": "",
       "playerlist": [
         {
