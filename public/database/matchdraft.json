@@ -2,17 +2,17 @@
   "draftdata": {
     "timer": "60",
     "timerRunning": false,
-    "current_phase": 0,
+    "current_phase": 7,
     "blueside": {
       "ban": [
         {
-          "hero": ""
+          "hero": "/Assets/HeroPick/bane.png"
         },
         {
-          "hero": ""
+          "hero": "/Assets/HeroPick/phoveus.png"
         },
         {
-          "hero": ""
+          "hero": "/Assets/HeroPick/barats.png"
         },
         {
           "hero": ""
@@ -23,7 +23,7 @@
       ],
       "pick": [
         {
-          "hero": ""
+          "hero": "/Assets/HeroPick/hanabi.png"
         },
         {
           "hero": ""
@@ -42,13 +42,13 @@
     "redside": {
       "ban": [
         {
-          "hero": ""
+          "hero": "/Assets/HeroPick/alice.png"
         },
         {
-          "hero": ""
+          "hero": "/Assets/HeroPick/aldous.png"
         },
         {
-          "hero": ""
+          "hero": "/Assets/HeroPick/argus.png"
         },
         {
           "hero": ""
@@ -75,6 +75,6 @@
         }
       ]
     },
-    "timer_running": false
+    "timer_running": true
   }
 }

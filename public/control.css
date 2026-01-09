@@ -98,6 +98,7 @@ h1, h2 {
 
 .section-card {
     background-color: transparent;
+
     display: flex; flex-direction: column; gap: 10px;
 }
 /* Mengatur lebar kolom */
@@ -116,24 +117,37 @@ h1, h2 {
 .name-box { display: flex; align-items: center; gap: 10px; }
 
 /* --- Input & Dropdown (INTERAKSI JELAS) --- */
-input[type="text"], .dropdown {
+input[type="text"], select, .dropdown {
     width: 100%; height: 38px; padding: 0 12px; box-sizing: border-box;
     text-align: center; border: 1px solid var(--border-color); border-radius: 0;
     background: var(--background-color); color: var(--font-color);
     font-size: 1em; transition: all 0.2s ease;
 }
 /* Efek hover untuk menandakan bisa diklik */
-input[type="text"]:hover, .dropdown:hover {
+input[type="text"]:hover, select:hover, .dropdown:hover {
     border-color: var(--accent-color);
-    box-shadow: 0 0 10px var(--accent-glow);
+    box-shadow: 0 0 5px var(--blob-color-1);
 }
 /* Efek focus yang lebih kuat */
-input[type="text"]:focus, .dropdown:focus {
-    outline: none; border-color: var(--accent-color);
-    box-shadow: 0 0 15px var(--accent-glow), inset 0 0 10px rgba(168, 85, 247, 0.1);
+input[type="text"]:focus, select:focus, .dropdown:focus {
+    outline: 1.5px solid var(--accent-color); border-color: var(--accent-color);
+    box-shadow: 0 0 15px var(--blob-color-1), inset 0 0 10px rgba(254, 0, 0, 0.1);
 }
 
-.dropdown-container { position: relative; display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+/* Player name inputs - dark gray background */
+.player-input {
+    background: #1f1f1fb4 !important; /* Red background */
+    color: rgba(255, 255, 255, 0.712) !important;
+    border: 1px solid var(--border-color) !important;
+}
+
+.dropdown-container {position: relative; display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.dropdown-container.active input[type="text"] { 
+    border: 1.5px solid var(--accent-color); 
+    outline: 1.5px solid var(--accent-color);
+    box-shadow: 0 0 15px var(--blob-color-1), inset 0 0 10px rgba(254, 0, 0, 0.1);
+}
+
 .dropdown-items { position: absolute; top: 100%; left: 0; width: 100%; z-index: 1000;
     background: var(--card-color); border: 1px solid var(--accent-color);
     max-height: 200px; overflow-y: auto; display: none;
@@ -152,7 +166,11 @@ button:hover {
     background-color: var(--accent-color); color: var(--background-color);
     box-shadow: 0 0 15px var(--accent-glow);
 }
-button:active { transform: translateY(1px) scale(0.98); }
+
+button:active { 
+    color: var(--background-color); transform: translateY(1px) scale(0.98); 
+}
+
 
 /* Tombol Kontrol Atas & Bawah */
 .button, .timercontrol { display: flex; gap: 10px; justify-content: center; margin: 20px 0; }
@@ -166,6 +184,11 @@ button:active { transform: translateY(1px) scale(0.98); }
 
 /* Tombol Swap Nickname (lebih kecil) */
 .name-box button { padding: 8px 12px; font-size: 0.8em; }
+
+/* Style for selected swap buttons (Cancel state) */
+.swap-button.selected {
+    background-color: #ffc107;
+}
 
 /* [BARU] GAYA TOMBOL SWAP KETIKA AKTIF */
 /* Anda perlu menambahkan/menghapus kelas 'swap-active' ini dari JavaScript */

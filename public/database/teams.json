@@ -1,0 +1,164 @@
+{
+  "teams": [
+    {
+      "name": "AZURE ESPORTS",
+      "players": [
+        { "name": "SINBADD", "role": "EXP Lane" },
+        { "name": "ROWI", "role": "Roam" },
+        { "name": "YUA", "role": "Mid Lane" },
+        { "name": "REALEST", "role": "Jungle" },
+        { "name": "RAPAPAP", "role": "Gold Lane" }
+      ]
+    },
+    {
+      "name": "DC10 ESPORTS",
+      "players": [
+        { "name": "JUSTN", "role": "EXP Lane" },
+        { "name": "LORD CHONG", "role": "Roam" },
+        { "name": "JAYS", "role": "Mid Lane" },
+        { "name": "YURI FINE ASF", "role": "Jungle" },
+        { "name": "SHIROE", "role": "Gold Lane" }
+      ]
+    },
+    {
+      "name": "DNX SOLID",
+      "players": [
+        { "name": "NAZEE TOM", "role": "EXP Lane" },
+        { "name": "DIO", "role": "Roam" },
+        { "name": "YEARY", "role": "Mid Lane" },
+        { "name": "HUGE KATAGAKI", "role": "Jungle" },
+        { "name": "DENNY", "role": "Gold Lane" }
+      ]
+    },
+    {
+      "name": "ELIJAH EXCIDIUM",
+      "players": [
+        { "name": "AARON", "role": "EXP Lane" },
+        { "name": "RIMUPHOBIA", "role": "Roam" },
+        { "name": "NATCHII", "role": "Mid Lane" },
+        { "name": "MIPOSHKA", "role": "Jungle" },
+        { "name": "DOC DGAF", "role": "Gold Lane" }
+      ]
+    },
+    {
+      "name": "EUNITY NIGHTMARE",
+      "players": [
+        { "name": "NINONG ZORO", "role": "EXP Lane" },
+        { "name": "ZHAMMY", "role": "Roam" },
+        { "name": "AGIPSE", "role": "Mid Lane" },
+        { "name": "XENO", "role": "Jungle" },
+        { "name": "BIBITO", "role": "Gold Lane" }
+      ]
+    },
+    {
+      "name": "EXP UPRISING",
+      "players": [
+        { "name": "RUMBAA", "role": "EXP Lane" },
+        { "name": "SADLIFE", "role": "Roam" },
+        { "name": "CYRIEE", "role": "Mid Lane" },
+        { "name": "LEIL", "role": "Jungle" },
+        { "name": "NERPZUU", "role": "Gold Lane" }
+      ]
+    },
+    {
+      "name": "FINESSE NYXOS",
+      "players": [
+        { "name": "OFFLANE", "role": "EXP Lane" },
+        { "name": "RAIZO", "role": "Roam" },
+        { "name": "STEWIE2K", "role": "Mid Lane" },
+        { "name": "LIQUID MIRACLE", "role": "Jungle" },
+        { "name": "SKY", "role": "Gold Lane" }
+      ]
+    },
+    {
+      "name": "HERCULES CYTOPLASM",
+      "players": [
+        { "name": "ZANEYY", "role": "EXP Lane" },
+        { "name": "LT TITUS", "role": "Roam" },
+        { "name": "XERXES", "role": "Mid Lane" },
+        { "name": "RAKIM", "role": "Jungle" },
+        { "name": "MW", "role": "Gold Lane" }
+      ]
+    },
+    {
+      "name": "INET-WORK AEGIS SOLID 2.0",
+      "players": [
+        { "name": "ASPLATT", "role": "EXP Lane" },
+        { "name": "DEMONLORD", "role": "Roam" },
+        { "name": "DREXEL", "role": "Mid Lane" },
+        { "name": "YESLUC", "role": "Jungle" },
+        { "name": "HABIBI.", "role": "Gold Lane" }
+      ]
+    },
+    {
+      "name": "INET-WORK AEGIS SOLID 3.0",
+      "players": [
+        { "name": "CLIPZU", "role": "EXP Lane" },
+        { "name": "ZH4KNU", "role": "Roam" },
+        { "name": "DARV", "role": "Mid Lane" },
+        { "name": "JIEL", "role": "Jungle" },
+        { "name": "HIKARU", "role": "Gold Lane" }
+      ]
+    },
+    {
+      "name": "ODDS ESPORTS",
+      "players": [
+        { "name": "KOYL", "role": "EXP Lane" },
+        { "name": "DEKS", "role": "Roam" },
+        { "name": "IMPOSTOR", "role": "Mid Lane" },
+        { "name": "KATARI", "role": "Jungle" },
+        { "name": "EDZYZ", "role": "Gold Lane" }
+      ]
+    },
+    {
+      "name": "ROCK ETERNALS",
+      "players": [
+        { "name": "ATOYR", "role": "EXP Lane" },
+        { "name": "OHMYD1NUS", "role": "Roam" },
+        { "name": "QOOBE", "role": "Mid Lane" },
+        { "name": "PRIME ZEGION", "role": "Jungle" },
+        { "name": "K1ROS", "role": "Gold Lane" }
+      ]
+    },
+    {
+      "name": "ROCK IMPERIUM",
+      "players": [
+        { "name": "KOZEN", "role": "EXP Lane" },
+        { "name": "ZAIRE BREYN", "role": "Roam" },
+        { "name": "ARCI", "role": "Mid Lane" },
+        { "name": "RYUU", "role": "Jungle" },
+        { "name": "HABIBI", "role": "Gold Lane" }
+      ]
+    },
+    {
+      "name": "SEIKATSU",
+      "players": [
+        { "name": "KRYZZ", "role": "EXP Lane" },
+        { "name": "ADRIAN", "role": "Roam" },
+        { "name": "YOTI", "role": "Mid Lane" },
+        { "name": "GIAN", "role": "Jungle" },
+        { "name": "DESTROYER", "role": "Gold Lane" }
+      ]
+    },
+    {
+      "name": "TEAM SIX",
+      "players": [
+        { "name": "ALISHA", "role": "EXP Lane" },
+        { "name": "MIAH", "role": "Roam" },
+        { "name": "ENGRYAHERO", "role": "Mid Lane" },
+        { "name": "HYZO", "role": "Jungle" },
+        { "name": "SHINJU", "role": "Gold Lane" }
+      ]
+    },
+    {
+      "name": "VAMOS WANTED",
+      "players": [
+        { "name": "NOAH", "role": "EXP Lane" },
+        { "name": "HONEY", "role": "Roam" },
+        { "name": "ZDOWN", "role": "Mid Lane" },
+        { "name": "ARTEMIS", "role": "Jungle" },
+        { "name": "K1RA", "role": "Gold Lane" }
+      ]
+    }
+  ]
+}

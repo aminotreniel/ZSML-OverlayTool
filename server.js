@@ -491,7 +491,7 @@ wss.on("connection", (ws) => {
 // ==========================================
 // START SERVER
 // ==========================================
-const port = 3000;
+const port = 3001;
 const localIp = getLocalIp();
 
 server.listen(port, async () => {

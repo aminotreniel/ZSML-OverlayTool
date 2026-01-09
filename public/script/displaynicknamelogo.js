@@ -33,10 +33,34 @@ function updateUI(data) {
     setImage('displayImage1', blue.logo, "Logo Biru");
 
     if (blue.playerlist) {
+        const roles = ['EXP Lane', 'Roam', 'Mid Lane', 'Jungle', 'Gold Lane'];
+        const roleImages = {
+            'EXP Lane': '/Assets/roles/Offlane.png',
+            'Roam': '/Assets/roles/Roaming.png',
+            'Mid Lane': '/Assets/roles/Midlane.png',
+            'Jungle': '/Assets/roles/Jungle.png',
+            'Gold Lane': '/Assets/roles/Gold.png'
+        };
         blue.playerlist.forEach((player, index) => {
-            const htmlId = 3 + index; 
-            setText(`name-box-${htmlId}`, player.name);
-            setMugshot(`name-image-box-${htmlId}`, player.name);
+            const htmlId = 3 + index;
+            
+            // Safely extract player name
+            let playerName = '';
+            if (typeof player === 'string') {
+                playerName = player;
+            } else if (player && typeof player === 'object') {
+                playerName = player.name || player.Name || player.NAME || '';
+                // If still empty, check if player itself might be the name
+                if (!playerName && Object.keys(player).length === 0) {
+                    playerName = '';
+                }
+            }
+            
+            setText(`name-box-${htmlId}`, playerName);
+            setMugshot(`name-image-box-${htmlId}`, playerName);
+            const role = roles[index];
+            const imgSrc = roleImages[role];
+            setImage(`role-img-${htmlId}`, imgSrc, 'Role');
         });
     }
 
@@ -46,10 +70,34 @@ function updateUI(data) {
     setImage('displayImage2', red.logo, "Logo Merah");
 
     if (red.playerlist) {
+        const roles = ['EXP Lane', 'Roam', 'Mid Lane', 'Jungle', 'Gold Lane'];
+        const roleImages = {
+            'EXP Lane': '/Assets/roles/Offlane.png',
+            'Roam': '/Assets/roles/Roaming.png',
+            'Mid Lane': '/Assets/roles/Midlane.png',
+            'Jungle': '/Assets/roles/Jungle.png',
+            'Gold Lane': '/Assets/roles/Gold.png'
+        };
         red.playerlist.forEach((player, index) => {
-            const htmlId = 10 + index; 
-            setText(`name-box-${htmlId}`, player.name);
-            setMugshot(`name-image-box-${htmlId}`, player.name);
+            const htmlId = 10 + index;
+            
+            // Safely extract player name
+            let playerName = '';
+            if (typeof player === 'string') {
+                playerName = player;
+            } else if (player && typeof player === 'object') {
+                playerName = player.name || player.Name || player.NAME || '';
+                // If still empty, check if player itself might be the name
+                if (!playerName && Object.keys(player).length === 0) {
+                    playerName = '';
+                }
+            }
+            
+            setText(`name-box-${htmlId}`, playerName);
+            setMugshot(`name-image-box-${htmlId}`, playerName);
+            const role = roles[index];
+            const imgSrc = roleImages[role];
+            setImage(`role-img-${htmlId}`, imgSrc, 'Role');
         });
     }
 }
@@ -58,7 +106,15 @@ function updateUI(data) {
 
 function setText(id, text) {
     const el = document.getElementById(id);
-    if (el) el.textContent = text || "";
+    if (el) {
+        // Handle cases where text might be an object
+        let textValue = text;
+        if (text && typeof text === 'object') {
+            // If it's an object, try to get a string representation
+            textValue = text.name || text.Name || text.NAME || text.toString() || JSON.stringify(text);
+        }
+        el.textContent = String(textValue || "");
+    }
 }
 
 // UPDATE: Menambahkan default logo jika kosong
@@ -90,21 +146,34 @@ function setMugshot(containerId, playerName) {
     const container = document.getElementById(containerId);
     if (!container) return;
 
-    container.innerHTML = '';
-    const img = document.createElement('img');
-    
-    if (playerName && playerName.trim() !== "") {
-        img.src = `Assets/player/${encodeURIComponent(playerName)}.png`;
-    } else {
-        img.src = "Assets/player/noplayer.png";
+    if (!playerName || playerName.trim() === '') {
+        container.innerHTML = '';
+        return;
     }
 
-    img.onerror = function() {
-        this.onerror = null; 
-        this.src = "Assets/player/noplayer.png";
-    };
+    // Create or get the image element
+    let img = container.querySelector('img');
+    if (!img) {
+        img = document.createElement('img');
+        container.appendChild(img);
+    }
 
-    container.appendChild(img);
+    // Set the image source based on player name
+    const imagePath = `Assets/player/${playerName}.png`;
+    img.src = imagePath;
+    img.alt = playerName;
+
+    // Handle image load error - hide image if not found
+    img.onerror = function() {
+        this.onerror = null; // Prevent infinite loop
+        this.style.display = 'none';
+    };
+    
+    img.onload = function() {
+        this.style.display = 'block';
+    };
+    
+    img.style.display = 'block';
 }
 
 // --- LOGIKA KONEKSI REALTIME (PURE EVENT DRIVEN) ---

@@ -136,6 +136,12 @@ function applyServerDataToUI() {
 }
 
 function updateDropdownState() {
+    // Remove active class from all dropdown containers
+    for (let i = 1; i <= 20; i++) {
+        const container = document.getElementById(`dropdowns-${i}`);
+        if (container) container.classList.remove('active');
+    }
+
     for (let i = 1; i <= 20; i++) {
         const input = document.getElementById(`search-${i}`);
         if (input) input.disabled = !correctionMode;
@@ -147,6 +153,9 @@ function updateDropdownState() {
         dropdowns.forEach(dropdownId => {
             const input = document.getElementById(`search-${dropdownId.split('-')[1]}`);
             if (input) input.disabled = false;
+            // Add active class to current phase dropdown container
+            const container = document.getElementById(dropdownId);
+            if (container) container.classList.add('active');
         });
     }
     
@@ -313,6 +322,11 @@ async function handleControlAction(action) {
         currentDraftData.redside.pick = JSON.parse(JSON.stringify(empty));
         
         resetSelection();
+        
+        // Reset team names and player names
+        if (typeof resetNames === 'function') {
+            resetNames();
+        }
     }
     
     await saveDraftData();

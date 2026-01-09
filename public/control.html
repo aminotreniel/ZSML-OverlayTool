@@ -31,21 +31,25 @@
             <div class="blueside">
                 <div class="section-card">
                     <div class="namebox">BLUESIDE AND LOGO</div>
-                    <div class="name-box"><input type="text" id="name-input-1" placeholder="Nama Tim Biru"></div>
-                    <div class="name-box"><input type="text" id="name-input-2" placeholder="Skor"></div>
+                    <div class="name-box">
+                        <select id="name-input-1" onchange="onTeamSelect('blue', this.value)">
+                            <option value="">Select Team</option>
+                        </select>
+                    </div>
+                    <div class="name-box"><input type="text" id="name-input-2" placeholder="Score"></div>
                     <div class="container">
-                        <label>Upload Logo Biru:</label>
+                        <label>Upload Logo:</label>
                         <input type="file" id="file1" accept="image/*">
                     </div>
                 </div>
 
                 <div class="section-card">
                     <div class="namebox">NICKNAME</div>
-                    <div class="name-box"><input type="text" id="name-input-3" placeholder="Nickname P1"><div><button id="swap-btn-3" onclick="handleSwapClick(3, this)">Swap</button></div></div>
-                    <div class="name-box"><input type="text" id="name-input-4" placeholder="Nickname P2"><div><button id="swap-btn-4" onclick="handleSwapClick(4, this)">Swap</button></div></div>
-                    <div class="name-box"><input type="text" id="name-input-5" placeholder="Nickname P3"><div><button id="swap-btn-5" onclick="handleSwapClick(5, this)">Swap</button></div></div>
-                    <div class="name-box"><input type="text" id="name-input-6" placeholder="Nickname P4"><div><button id="swap-btn-6" onclick="handleSwapClick(6, this)">Swap</button></div></div>
-                    <div class="name-box"><input type="text" id="name-input-7" placeholder="Nickname P5"><div><button id="swap-btn-7" onclick="handleSwapClick(7, this)">Swap</button></div></div>
+                    <div class="name-box"><input type="text" id="name-input-3" class="player-input" placeholder="Nickname P1"><div><button id="swap-btn-3" onclick="handleSwapClick(3, this)">Swap</button></div></div>
+                    <div class="name-box"><input type="text" id="name-input-4" class="player-input" placeholder="Nickname P2"><div><button id="swap-btn-4" onclick="handleSwapClick(4, this)">Swap</button></div></div>
+                    <div class="name-box"><input type="text" id="name-input-5" class="player-input" placeholder="Nickname P3"><div><button id="swap-btn-5" onclick="handleSwapClick(5, this)">Swap</button></div></div>
+                    <div class="name-box"><input type="text" id="name-input-6" class="player-input" placeholder="Nickname P4"><div><button id="swap-btn-6" onclick="handleSwapClick(6, this)">Swap</button></div></div>
+                    <div class="name-box"><input type="text" id="name-input-7" class="player-input" placeholder="Nickname P5"><div><button id="swap-btn-7" onclick="handleSwapClick(7, this)">Swap</button></div></div>
                 </div>
 
                 <div class="section-card">
@@ -70,20 +74,24 @@
             <div class="redside">
                 <div class="section-card">
                     <div class="namebox">REDSIDE AND LOGO</div>
-                    <div class="name-box"><input type="text" id="name-input-8" placeholder="Nama Tim Merah"></div>
-                    <div class="name-box"><input type="text" id="name-input-9" placeholder="Skor"></div>
+                    <div class="name-box">
+                        <select id="name-input-8" onchange="onTeamSelect('red', this.value)">
+                            <option value="">Select Team</option>
+                        </select>
+                    </div>
+                    <div class="name-box"><input type="text" id="name-input-9" placeholder="Score"></div>
                     <div class="container">
-                        <label>Upload Logo Merah:</label>
+                        <label>Upload Logo:</label>
                         <input type="file" id="file2" accept="image/*">
                     </div>
                 </div>
                 <div class="section-card">
                     <div class="namebox">NICKNAME</div>
-                    <div class="name-box"><input type="text" id="name-input-10" placeholder="Nickname P1"><div><button id="swap-btn-10" onclick="handleSwapClick(10, this)">Swap</button></div></div>
-                    <div class="name-box"><input type="text" id="name-input-11" placeholder="Nickname P2"><div><button id="swap-btn-11" onclick="handleSwapClick(11, this)">Swap</button></div></div>
-                    <div class="name-box"><input type="text" id="name-input-12" placeholder="Nickname P3"><div><button id="swap-btn-12" onclick="handleSwapClick(12, this)">Swap</button></div></div>
-                    <div class="name-box"><input type="text" id="name-input-13" placeholder="Nickname P4"><div><button id="swap-btn-13" onclick="handleSwapClick(13, this)">Swap</button></div></div>
-                    <div class="name-box"><input type="text" id="name-input-14" placeholder="Nickname P5"><div><button id="swap-btn-14" onclick="handleSwapClick(14, this)">Swap</button></div></div>
+                    <div class="name-box"><input type="text" id="name-input-10" class="player-input" placeholder="Nickname P1"><div><button id="swap-btn-10" onclick="handleSwapClick(10, this)">Swap</button></div></div>
+                    <div class="name-box"><input type="text" id="name-input-11" class="player-input" placeholder="Nickname P2"><div><button id="swap-btn-11" onclick="handleSwapClick(11, this)">Swap</button></div></div>
+                    <div class="name-box"><input type="text" id="name-input-12" class="player-input" placeholder="Nickname P3"><div><button id="swap-btn-12" onclick="handleSwapClick(12, this)">Swap</button></div></div>
+                    <div class="name-box"><input type="text" id="name-input-13" class="player-input" placeholder="Nickname P4"><div><button id="swap-btn-13" onclick="handleSwapClick(13, this)">Swap</button></div></div>
+                    <div class="name-box"><input type="text" id="name-input-14" class="player-input" placeholder="Nickname P5"><div><button id="swap-btn-14" onclick="handleSwapClick(14, this)">Swap</button></div></div>
                 </div>
                 <div class="section-card">
                     <div class="namebox">HEROPICK</div>

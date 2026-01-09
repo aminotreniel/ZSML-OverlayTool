@@ -2,76 +2,76 @@
   "draftdata": {
     "timer": "60",
     "timerRunning": false,
-    "current_phase": 18,
+    "current_phase": 17,
     "blueside": {
       "ban": [
-        {
-          "hero": "/Assets/HeroPick/aldous.png"
-        },
-        {
-          "hero": "/Assets/HeroPick/jawhead.png"
-        },
-        {
-          "hero": "/Assets/HeroPick/gatotkaca.png"
-        },
-        {
-          "hero": "/Assets/HeroPick/pharsa.png"
-        },
-        {
-          "hero": "/Assets/HeroPick/benedetta.png"
-        }
-      ],
-      "pick": [
-        {
-          "hero": "/Assets/HeroPick/chip.png"
-        },
-        {
-          "hero": "/Assets/HeroPick/balmond.png"
-        },
-        {
-          "hero": "/Assets/HeroPick/balmond.png"
-        },
         {
           "hero": "/Assets/HeroPick/silvanna.png"
         },
         {
-          "hero": "/Assets/HeroPick/julian.png"
+          "hero": "/Assets/HeroPick/cecilion.png"
+        },
+        {
+          "hero": "/Assets/HeroPick/balmond.png"
+        },
+        {
+          "hero": "/Assets/HeroPick/minsitthar.png"
+        },
+        {
+          "hero": "/Assets/HeroPick/carmila.png"
+        }
+      ],
+      "pick": [
+        {
+          "hero": "/Assets/HeroPick/bane.png"
+        },
+        {
+          "hero": "/Assets/HeroPick/karina.png"
+        },
+        {
+          "hero": "/Assets/HeroPick/phoveus.png"
+        },
+        {
+          "hero": "/Assets/HeroPick/ixia.png"
+        },
+        {
+          "hero": "/Assets/HeroPick/helcurt.png"
         }
       ]
     },
     "redside": {
       "ban": [
         {
-          "hero": "/Assets/HeroPick/argus.png"
+          "hero": "/Assets/HeroPick/alpha.png"
         },
         {
-          "hero": "/Assets/HeroPick/chang_e.png"
+          "hero": "/Assets/HeroPick/beatrix.png"
+        },
+        {
+          "hero": "/Assets/HeroPick/xavier.png"
+        },
+        {
+          "hero": "/Assets/HeroPick/carmila.png"
+        },
+        {
+          "hero": "/Assets/HeroPick/helcurt.png"
+        }
+      ],
+      "pick": [
+        {
+          "hero": "/Assets/HeroPick/beatrix.png"
+        },
+        {
+          "hero": "/Assets/HeroPick/grock.png"
+        },
+        {
+          "hero": "/Assets/HeroPick/alpha.png"
         },
         {
           "hero": "/Assets/HeroPick/lancelot.png"
         },
         {
-          "hero": "/Assets/HeroPick/aamon.png"
-        },
-        {
-          "hero": "/Assets/HeroPick/melissa.png"
-        }
-      ],
-      "pick": [
-        {
-          "hero": "/Assets/HeroPick/argus.png"
-        },
-        {
-          "hero": "/Assets/HeroPick/akai.png"
-        },
-        {
-          "hero": "/Assets/HeroPick/baxia.png"
-        },
-        {
-          "hero": "/Assets/HeroPick/fanny.png"
-        },
-        {
-          "hero": "/Assets/HeroPick/hylos.png"
+          "hero": "/Assets/HeroPick/zilong.png"
         }
       ]
     },

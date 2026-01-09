@@ -5,6 +5,13 @@
     font-style: normal;
   }
 
+@font-face {
+    font-family: 'Urbanist';
+    src: local('Urbanist');
+    font-weight: normal;
+    font-style: normal;
+  }
+
 :root{
     --primarycolor: #fff;
 
@@ -24,7 +31,7 @@ body {
 .mainbox{
     width: 1920px;
     height: 1080px;
-    background-color: aqua;
+    background-color: rgb(0, 0, 0);
     background-image: url(Assets/Other/full.png);
 }
 .upper{
@@ -34,22 +41,48 @@ body {
     display: flex;
 }
 
-.logoteam{
+.logoteam-blue{
     width: 249px;
     height: 239px;
 
     display: flex;
     align-items: center;
     justify-content: center;
-   
+
     background-size: 100%;
- 
+
 }
 
-.logoteam img{
-    width: 200px;
-    height: 200px;
+.logoteam-red{
+    width: 249px;
+    height: 239px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-size: 100%;
+
+}
+
+.logoteam-blue img{
+    width: 80px;
+    height: 80px;
     object-fit: contain;
+    max-width: 100%;
+    max-height: 100%;
+    margin-left: 90px;
+
+}
+
+.logoteam-red img{
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    max-width: 100%;
+    max-height: 100%;
+    margin-right: 90px;
+
 
 }
 
@@ -60,8 +93,11 @@ body {
     display: flex;
     align-items: center;
     justify-content: left;
-    font-size: 70px;
+    font-size: 90px;
+    font-family: 'myfonts';
+    font-weight: 500;
     color: #ffffff;
+    margin-top: 5px;
 }
 
 .teamnamered{
@@ -71,14 +107,17 @@ body {
     display: flex;
     align-items: center;
     justify-content: right;
-    font-size: 70px;
+    font-size: 90px;
+    font-family: 'myfonts';
+    font-weight: 500;
     color: #ffffff;
+    
 }
 
 .middle{
     width: 1920px;
     height: 582px;
-    background-color: rgba(21, 4, 59, 0.295);
+    background-color: rgba(21, 4, 59, 0);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -87,8 +126,8 @@ body {
 .pick{
     width: 176px;
     height: 543px;
-    background-color: aqua;
-    border: 1px solid #ffffff;
+    background-color: rgb(0, 0, 0);
+    border: 1px solid #a700ff;
    overflow: hidden ;
     display: flex;
     position: relative;
@@ -122,8 +161,6 @@ body {
 .pickmid{
     width: 140px;
     height: 582px;
-    background-color: black;
-    background-image: url(Assets/Other/midpostdraft.png);
     background-size: 100%;
 }
 
@@ -134,31 +171,39 @@ body {
 }
 
 .bluenick{
-    width: 800px;
-    font-size: 40px;
+    width: 300px;
+    font-size: 20px;
+    font-family: 'Urbanist';
+    font-weight: bold;
     color: aliceblue;
-    text-shadow: 2px 3px 5px #000000;
-    margin-top: -290px;
-    margin-left: 123px;
+    margin-top: 505px;
+    margin-left:0px;
     position: absolute;
     z-index: 3;
-    rotate: -90deg;
     letter-spacing: 1px;
-    
+    background-color: #a700ff;
+    padding: 8px 16px;
+    border-radius: 8px;
+    text-align: center;
+
 }
 
 .rednick{
-    width: 800px;
-    font-size: 40px;
-    color: aliceblue;
-    text-shadow: 2px 3px 5px #000000;
-    margin-top: -290px;
-    margin-left: -125px;
+    width: 300px;
+    font-size: 20px;
+    font-family: 'Urbanist';
+    font-weight: bold;
+    color: rgb(255, 255, 255);
+    margin-top: 505px;
+    margin-left: 0px;
     position: absolute;
     z-index: 3;
-    rotate: -90deg;
     letter-spacing: 1px;
-    
+    background-color: #a700ff;
+    padding: 8px 16px;
+    border-radius: 8px;
+    text-align: center;
+
 }
 
 

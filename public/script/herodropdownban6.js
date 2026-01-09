@@ -309,6 +309,11 @@ async function handleControlAction(action) {
         currentDraftData.redside.pick = JSON.parse(JSON.stringify(empty));
         
         resetSelection();
+        
+        // Reset team names and player names
+        if (typeof resetNames === 'function') {
+            resetNames();
+        }
     }
     
     await saveDraftData();
