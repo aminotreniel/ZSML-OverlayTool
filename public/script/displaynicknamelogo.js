@@ -3,6 +3,60 @@
 // 1. Inisialisasi WebSocket ke Server
 const socket = new WebSocket(`ws://${window.location.host}`);
 
+// Cache for teams data
+let teamsData = null;
+
+// Load teams.json for player roles
+async function loadTeamsData() {
+    if (teamsData) {
+        return teamsData;
+    }
+    try {
+        const response = await fetch('/database/teams.json');
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        teamsData = await response.json();
+        console.log("Teams data loaded:", teamsData);
+        return teamsData;
+    } catch (error) {
+        console.error("Error loading teams data:", error);
+        return null;
+    }
+}
+
+// Function to get role from player name
+function getPlayerRole(playerName, teamName, teamsData) {
+    if (!teamsData || !teamsData.teams || !playerName || !teamName) {
+        return null;
+    }
+    const team = teamsData.teams.find(t => t.name === teamName);
+    if (team && team.players) {
+        const playerEntry = team.players.find(p => {
+            if (typeof p === 'string') {
+                return p === playerName;
+            }
+            return p.name === playerName;
+        });
+        return playerEntry && typeof playerEntry === 'object' ? playerEntry.role : null;
+    }
+    return null;
+}
+
+// Function to get city from team name
+function getTeamCity(teamName, teamsData) {
+    if (!teamsData || !teamsData.teams || !teamName) {
+        return null;
+    }
+    // Try exact match first
+    let team = teamsData.teams.find(t => t.name === teamName);
+    // If not found, try case-insensitive match
+    if (!team) {
+        team = teamsData.teams.find(t => t.name.toLowerCase() === teamName.toLowerCase());
+    }
+    return team && team.city ? team.city : null;
+}
+
 // 2. Fungsi untuk mengambil data dari Server (matchdatateam.json)
 // Fungsi ini HANYA dipanggil saat halaman dibuka atau saat ada sinyal dari WebSocket
 async function fetchDataAndUpdate() {
@@ -12,6 +66,9 @@ async function fetchDataAndUpdate() {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
+        
+        // Load teams data before updating UI
+        await loadTeamsData();
         
         // console.log("Data diterima:", data); // Uncomment untuk debug
         updateUI(data);
@@ -27,40 +84,102 @@ function updateUI(data) {
     const blue = data.teamdata.blueteam;
     const red = data.teamdata.redteam;
 
+    // Role image mapping
+    const roleImages = {
+        'EXP Lane': 'Assets/roles/EXP Lane.png',
+        'Roam': 'Assets/roles/Roam.png',
+        'Mid Lane': 'Assets/roles/Mid Lane.png',
+        'Jungle': 'Assets/roles/Jungle.png',
+        'Gold Lane': 'Assets/roles/Gold Lane.png'
+    };
+
     // --- TIM BIRU ---
     setText('name-box-1', blue.teamname);
     setText('name-box-2', blue.score);
     setImage('displayImage1', blue.logo, "Logo Biru");
+    
+    // Set city name for blue team
+    if (blue.teamname && teamsData) {
+        const city = getTeamCity(blue.teamname, teamsData);
+        console.log('Blue team city:', blue.teamname, '->', city);
+        const cityEl = document.getElementById('city-box-1');
+        if (cityEl) {
+            cityEl.textContent = city || '';
+            cityEl.style.display = 'block';
+            cityEl.style.visibility = 'visible';
+            cityEl.style.opacity = '1';
+            console.log('City box 1 element found and set to:', city || '');
+        } else {
+            console.error('City box 1 element not found!');
+        }
+    } else {
+        console.log('No blue team city data available');
+        setText('city-box-1', '');
+    }
 
     if (blue.playerlist) {
-        const roles = ['EXP Lane', 'Roam', 'Mid Lane', 'Jungle', 'Gold Lane'];
-        const roleImages = {
-            'EXP Lane': '/Assets/roles/Offlane.png',
-            'Roam': '/Assets/roles/Roaming.png',
-            'Mid Lane': '/Assets/roles/Midlane.png',
-            'Jungle': '/Assets/roles/Jungle.png',
-            'Gold Lane': '/Assets/roles/Gold.png'
-        };
         blue.playerlist.forEach((player, index) => {
             const htmlId = 3 + index;
-            
-            // Safely extract player name
             let playerName = '';
+            
+            // Debug: log the player object to see its structure
+            console.log(`Blue player[${index}]:`, player, typeof player);
+            
             if (typeof player === 'string') {
                 playerName = player;
-            } else if (player && typeof player === 'object') {
-                playerName = player.name || player.Name || player.NAME || '';
-                // If still empty, check if player itself might be the name
-                if (!playerName && Object.keys(player).length === 0) {
+                // Filter out "[object Object]" strings
+                if (playerName === '[object Object]') {
                     playerName = '';
+                }
+            } else if (player && typeof player === 'object') {
+                // Try all possible name properties
+                playerName = player.name || player.Name || player.NAME || player.playerName || player.PlayerName || '';
+                
+                // Filter out "[object Object]" strings
+                if (playerName === '[object Object]') {
+                    playerName = '';
+                }
+                
+                // If still empty, try to stringify and extract
+                if (!playerName) {
+                    const keys = Object.keys(player);
+                    if (keys.length > 0) {
+                        // Try first property that looks like a name
+                        for (let key of keys) {
+                            if (typeof player[key] === 'string' && player[key].trim() !== '' && player[key] !== '[object Object]') {
+                                playerName = player[key];
+                                break;
+                            }
+                        }
+                    }
+                }
+                
+                // Last resort: if object has toString, use it (but filter out [object Object])
+                if (!playerName && player.toString && player.toString() !== '[object Object]') {
+                    playerName = player.toString();
                 }
             }
             
+            console.log(`Extracted playerName for blue[${index}]:`, playerName);
             setText(`name-box-${htmlId}`, playerName);
             setMugshot(`name-image-box-${htmlId}`, playerName);
-            const role = roles[index];
+
+            // Set role image
+            let role = player?.role || player?.Role || player?.ROLE;
+            if (!role && teamsData && playerName && blue.teamname) {
+                role = getPlayerRole(playerName, blue.teamname, teamsData);
+            }
+            if (!role) {
+                const defaultRoles = ['EXP Lane', 'Roam', 'Mid Lane', 'Jungle', 'Gold Lane'];
+                role = defaultRoles[index] || 'EXP Lane';
+            }
             const imgSrc = roleImages[role];
-            setImage(`role-img-${htmlId}`, imgSrc, 'Role');
+            console.log(`Blue player ${htmlId} (${playerName}): role="${role}", imgSrc="${imgSrc}"`);
+            if (imgSrc) {
+                setRoleImage(`role-img-${htmlId}`, imgSrc);
+            } else {
+                setRoleImage(`role-img-${htmlId}`, ''); // Clear image if no source
+            }
         });
     }
 
@@ -68,36 +187,89 @@ function updateUI(data) {
     setText('name-box-8', red.teamname);
     setText('name-box-9', red.score);
     setImage('displayImage2', red.logo, "Logo Merah");
+    
+    // Set city name for red team
+    if (red.teamname && teamsData) {
+        const city = getTeamCity(red.teamname, teamsData);
+        console.log('Red team city:', red.teamname, '->', city);
+        const cityEl = document.getElementById('city-box-8');
+        if (cityEl) {
+            cityEl.textContent = city || '';
+            cityEl.style.display = 'block';
+            cityEl.style.visibility = 'visible';
+            cityEl.style.opacity = '1';
+            console.log('City box 8 element found and set to:', city || '');
+        } else {
+            console.error('City box 8 element not found!');
+        }
+    } else {
+        console.log('No red team city data available');
+        setText('city-box-8', '');
+    }
 
     if (red.playerlist) {
-        const roles = ['EXP Lane', 'Roam', 'Mid Lane', 'Jungle', 'Gold Lane'];
-        const roleImages = {
-            'EXP Lane': '/Assets/roles/Offlane.png',
-            'Roam': '/Assets/roles/Roaming.png',
-            'Mid Lane': '/Assets/roles/Midlane.png',
-            'Jungle': '/Assets/roles/Jungle.png',
-            'Gold Lane': '/Assets/roles/Gold.png'
-        };
         red.playerlist.forEach((player, index) => {
             const htmlId = 10 + index;
-            
-            // Safely extract player name
             let playerName = '';
+            
+            // Debug: log the player object to see its structure
+            console.log(`Red player[${index}]:`, player, typeof player);
+            
             if (typeof player === 'string') {
                 playerName = player;
-            } else if (player && typeof player === 'object') {
-                playerName = player.name || player.Name || player.NAME || '';
-                // If still empty, check if player itself might be the name
-                if (!playerName && Object.keys(player).length === 0) {
+                // Filter out "[object Object]" strings
+                if (playerName === '[object Object]') {
                     playerName = '';
+                }
+            } else if (player && typeof player === 'object') {
+                // Try all possible name properties
+                playerName = player.name || player.Name || player.NAME || player.playerName || player.PlayerName || '';
+                
+                // Filter out "[object Object]" strings
+                if (playerName === '[object Object]') {
+                    playerName = '';
+                }
+                
+                // If still empty, try to stringify and extract
+                if (!playerName) {
+                    const keys = Object.keys(player);
+                    if (keys.length > 0) {
+                        // Try first property that looks like a name
+                        for (let key of keys) {
+                            if (typeof player[key] === 'string' && player[key].trim() !== '' && player[key] !== '[object Object]') {
+                                playerName = player[key];
+                                break;
+                            }
+                        }
+                    }
+                }
+                
+                // Last resort: if object has toString, use it (but filter out [object Object])
+                if (!playerName && player.toString && player.toString() !== '[object Object]') {
+                    playerName = player.toString();
                 }
             }
             
+            console.log(`Extracted playerName for red[${index}]:`, playerName);
             setText(`name-box-${htmlId}`, playerName);
             setMugshot(`name-image-box-${htmlId}`, playerName);
-            const role = roles[index];
+
+            // Set role image
+            let role = player?.role || player?.Role || player?.ROLE;
+            if (!role && teamsData && playerName && red.teamname) {
+                role = getPlayerRole(playerName, red.teamname, teamsData);
+            }
+            if (!role) {
+                const defaultRoles = ['EXP Lane', 'Roam', 'Mid Lane', 'Jungle', 'Gold Lane'];
+                role = defaultRoles[index] || 'EXP Lane';
+            }
             const imgSrc = roleImages[role];
-            setImage(`role-img-${htmlId}`, imgSrc, 'Role');
+            console.log(`Red player ${htmlId} (${playerName}): role="${role}", imgSrc="${imgSrc}"`);
+            if (imgSrc) {
+                setRoleImage(`role-img-${htmlId}`, imgSrc);
+            } else {
+                setRoleImage(`role-img-${htmlId}`, ''); // Clear image if no source
+            }
         });
     }
 }
@@ -107,12 +279,51 @@ function updateUI(data) {
 function setText(id, text) {
     const el = document.getElementById(id);
     if (el) {
-        // Handle cases where text might be an object
         let textValue = text;
-        if (text && typeof text === 'object') {
-            // If it's an object, try to get a string representation
-            textValue = text.name || text.Name || text.NAME || text.toString() || JSON.stringify(text);
+        
+        // Handle null/undefined
+        if (text === null || text === undefined) {
+            textValue = '';
         }
+        // Handle objects
+        else if (typeof text === 'object') {
+            // Try common name properties first
+            textValue = text.name || text.Name || text.NAME || text.playerName || text.PlayerName || '';
+            
+            // Filter out "[object Object]" strings
+            if (textValue === '[object Object]') {
+                textValue = '';
+            }
+            
+            // If no name property found, check if it's an empty object
+            if (!textValue) {
+                const keys = Object.keys(text);
+                if (keys.length === 0) {
+                    textValue = '';
+                } else {
+                    // Try to find a string value
+                    for (let key of keys) {
+                        if (typeof text[key] === 'string' && text[key].trim() !== '' && text[key] !== '[object Object]') {
+                            textValue = text[key];
+                            break;
+                        }
+                    }
+                    // If still no value, don't show [object Object]
+                    if (!textValue) {
+                        textValue = '';
+                    }
+                }
+            }
+        }
+        // Handle strings - filter out "[object Object]"
+        else if (typeof text === 'string' && text === '[object Object]') {
+            textValue = '';
+        }
+        // Handle other types
+        else {
+            textValue = String(text);
+        }
+        
         el.textContent = String(textValue || "");
     }
 }
@@ -145,35 +356,74 @@ function setImage(id, base64Data, altText) {
 function setMugshot(containerId, playerName) {
     const container = document.getElementById(containerId);
     if (!container) return;
-
     if (!playerName || playerName.trim() === '') {
         container.innerHTML = '';
         return;
     }
-
-    // Create or get the image element
     let img = container.querySelector('img');
     if (!img) {
         img = document.createElement('img');
         container.appendChild(img);
     }
-
-    // Set the image source based on player name
     const imagePath = `Assets/player/${playerName}.png`;
     img.src = imagePath;
     img.alt = playerName;
-
-    // Handle image load error - hide image if not found
-    img.onerror = function() {
-        this.onerror = null; // Prevent infinite loop
-        this.style.display = 'none';
-    };
-    
-    img.onload = function() {
-        this.style.display = 'block';
-    };
-    
+    img.onerror = function() { this.onerror = null; this.style.display = 'none'; };
+    img.onload = function() { this.style.display = 'block'; };
     img.style.display = 'block';
+}
+
+function setRoleImage(id, imgSrc) {
+    const img = document.getElementById(id);
+    const container = img ? img.parentElement : null;
+
+    if (!img || !container) {
+        console.error(`Role image element or container not found: ${id}`);
+        return;
+    }
+
+    // Apply inline styles to ensure visibility
+    container.style.display = 'flex';
+    container.style.visibility = 'visible';
+    container.style.opacity = '1';
+    container.style.backgroundColor = '#a800ff';
+    container.style.width = '27px';
+    container.style.height = '27px';
+    container.style.border = 'none';
+
+    if (imgSrc) {
+        img.src = imgSrc;
+        img.alt = "Role";
+        img.style.display = 'block';
+        img.style.visibility = 'visible';
+        img.style.opacity = '1';
+        img.style.width = '23px';
+        img.style.height = '23px';
+        img.style.border = 'none';
+        img.style.backgroundColor = 'transparent';
+
+        img.onerror = function() {
+            console.error(`Failed to load role image: ${imgSrc} for element ${id}`);
+            this.onerror = null;
+            this.style.border = '2px solid yellow';
+            this.style.backgroundColor = '#ff0000';
+            this.style.width = '23px';
+            this.style.height = '23px';
+            if (container) container.style.border = '1px solid red';
+        };
+        img.onload = function() {
+            console.log(`Successfully loaded role image: ${imgSrc} for element ${id}`);
+            this.style.border = 'none';
+            this.style.backgroundColor = 'transparent';
+            this.style.display = 'block';
+        };
+    } else {
+        img.src = '';
+        img.alt = "No Role";
+        img.style.display = 'none';
+        img.style.border = 'none';
+        img.style.backgroundColor = 'transparent';
+    }
 }
 
 // --- LOGIKA KONEKSI REALTIME (PURE EVENT DRIVEN) ---

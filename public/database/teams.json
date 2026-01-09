@@ -2,6 +2,7 @@
   "teams": [
     {
       "name": "AZURE ESPORTS",
+      "city": "Davao City",
       "players": [
         { "name": "SINBADD", "role": "EXP Lane" },
         { "name": "ROWI", "role": "Roam" },
@@ -12,6 +13,7 @@
     },
     {
       "name": "DC10 ESPORTS",
+      "city": "Cebu City",
       "players": [
         { "name": "JUSTN", "role": "EXP Lane" },
         { "name": "LORD CHONG", "role": "Roam" },
@@ -22,6 +24,7 @@
     },
     {
       "name": "DNX SOLID",
+      "city": "Zamboanga City",
       "players": [
         { "name": "NAZEE TOM", "role": "EXP Lane" },
         { "name": "DIO", "role": "Roam" },
@@ -32,6 +35,7 @@
     },
     {
       "name": "ELIJAH EXCIDIUM",
+      "city": "Cagayan de Oro City",
       "players": [
         { "name": "AARON", "role": "EXP Lane" },
         { "name": "RIMUPHOBIA", "role": "Roam" },
@@ -42,6 +46,7 @@
     },
     {
       "name": "EUNITY NIGHTMARE",
+      "city": "General Santos City",
       "players": [
         { "name": "NINONG ZORO", "role": "EXP Lane" },
         { "name": "ZHAMMY", "role": "Roam" },
@@ -52,6 +57,7 @@
     },
     {
       "name": "EXP UPRISING",
+      "city": "Iloilo City",
       "players": [
         { "name": "RUMBAA", "role": "EXP Lane" },
         { "name": "SADLIFE", "role": "Roam" },
@@ -62,6 +68,7 @@
     },
     {
       "name": "FINESSE NYXOS",
+      "city": "Bacolod City",
       "players": [
         { "name": "OFFLANE", "role": "EXP Lane" },
         { "name": "RAIZO", "role": "Roam" },
@@ -72,6 +79,7 @@
     },
     {
       "name": "HERCULES CYTOPLASM",
+      "city": "Iligan City",
       "players": [
         { "name": "ZANEYY", "role": "EXP Lane" },
         { "name": "LT TITUS", "role": "Roam" },
@@ -82,6 +90,7 @@
     },
     {
       "name": "INET-WORK AEGIS SOLID 2.0",
+      "city": "Pagadian City",
       "players": [
         { "name": "ASPLATT", "role": "EXP Lane" },
         { "name": "DEMONLORD", "role": "Roam" },
@@ -92,6 +101,7 @@
     },
     {
       "name": "INET-WORK AEGIS SOLID 3.0",
+      "city": "Butuan City",
       "players": [
         { "name": "CLIPZU", "role": "EXP Lane" },
         { "name": "ZH4KNU", "role": "Roam" },
@@ -102,6 +112,7 @@
     },
     {
       "name": "ODDS ESPORTS",
+      "city": "Dipolog City",
       "players": [
         { "name": "KOYL", "role": "EXP Lane" },
         { "name": "DEKS", "role": "Roam" },
@@ -112,6 +123,7 @@
     },
     {
       "name": "ROCK ETERNALS",
+      "city": "Tacloban City",
       "players": [
         { "name": "ATOYR", "role": "EXP Lane" },
         { "name": "OHMYD1NUS", "role": "Roam" },
@@ -122,6 +134,7 @@
     },
     {
       "name": "ROCK IMPERIUM",
+      "city": "Naga City",
       "players": [
         { "name": "KOZEN", "role": "EXP Lane" },
         { "name": "ZAIRE BREYN", "role": "Roam" },
@@ -132,6 +145,7 @@
     },
     {
       "name": "SEIKATSU",
+      "city": "Lucena City",
       "players": [
         { "name": "KRYZZ", "role": "EXP Lane" },
         { "name": "ADRIAN", "role": "Roam" },
@@ -142,6 +156,7 @@
     },
     {
       "name": "TEAM SIX",
+      "city": "Antipolo City",
       "players": [
         { "name": "ALISHA", "role": "EXP Lane" },
         { "name": "MIAH", "role": "Roam" },
@@ -152,6 +167,7 @@
     },
     {
       "name": "VAMOS WANTED",
+      "city": "Quezon City",
       "players": [
         { "name": "NOAH", "role": "EXP Lane" },
         { "name": "HONEY", "role": "Roam" },

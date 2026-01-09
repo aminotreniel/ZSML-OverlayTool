@@ -93,11 +93,11 @@ body {
     display: flex;
     align-items: center;
     justify-content: left;
-    font-size: 90px;
+    font-size: 60px;
     font-family: 'myfonts';
     font-weight: 500;
     color: #ffffff;
-    margin-top: 5px;
+    margin-top: 0px;
 }
 
 .teamnamered{
@@ -107,10 +107,11 @@ body {
     display: flex;
     align-items: center;
     justify-content: right;
-    font-size: 90px;
+    font-size: 60px;
     font-family: 'myfonts';
     font-weight: 500;
     color: #ffffff;
+    margin-top: -3px;
     
 }
 

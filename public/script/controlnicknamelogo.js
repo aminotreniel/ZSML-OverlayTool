@@ -7,6 +7,7 @@ let currentRedLogo = "";
 // Variabel global untuk menyimpan data tim
 let teamsData = [];
 
+
 // --- FUNGSI TEAM MANAGEMENT ---
 
 // Load teams data from teams.json
@@ -170,7 +171,7 @@ function onTeamSelect(side, teamName) {
             const inputId = playerInputs[index];
             const inputElement = document.getElementById(inputId);
             if (inputElement) {
-                // Safely extract player name - handle both string and object cases
+                // Extract player name - handle both string and object formats
                 let playerName = '';
                 if (typeof player === 'string') {
                     playerName = player;
@@ -178,7 +179,7 @@ function onTeamSelect(side, teamName) {
                     playerName = player.name || player.Name || player.NAME || '';
                 }
                 console.log(`Setting ${inputId} to "${playerName}"`);
-                inputElement.value = playerName;
+                inputElement.value = playerName || '';
             } else {
                 console.error('Input element not found:', inputId);
             }
@@ -218,8 +219,12 @@ async function loadFromServer() {
                 playerName = player;
             } else if (player && typeof player === 'object') {
                 playerName = player.name || player.Name || player.NAME || '';
+                // If it's "[object Object]", clear it
+                if (playerName === '[object Object]') {
+                    playerName = '';
+                }
             }
-            document.getElementById(`name-input-${3+i}`).value = playerName || "";
+            document.getElementById(`name-input-${3+i}`).value = playerName;
         }
 
         // 2. Isi Data Tim Merah
@@ -235,8 +240,12 @@ async function loadFromServer() {
                 playerName = player;
             } else if (player && typeof player === 'object') {
                 playerName = player.name || player.Name || player.NAME || '';
+                // If it's "[object Object]", clear it
+                if (playerName === '[object Object]') {
+                    playerName = '';
+                }
             }
-            document.getElementById(`name-input-${10+i}`).value = playerName || "";
+            document.getElementById(`name-input-${10+i}`).value = playerName;
         }
 
     } catch (error) {
@@ -254,11 +263,11 @@ async function saveToServer() {
                 "score": document.getElementById('name-input-2').value,
                 "logo": currentBlueLogo,
                 "playerlist": [
-                    { "name": document.getElementById('name-input-3').value },
-                    { "name": document.getElementById('name-input-4').value },
-                    { "name": document.getElementById('name-input-5').value },
-                    { "name": document.getElementById('name-input-6').value },
-                    { "name": document.getElementById('name-input-7').value }
+                    { "name": (document.getElementById('name-input-3').value || "").trim() },
+                    { "name": (document.getElementById('name-input-4').value || "").trim() },
+                    { "name": (document.getElementById('name-input-5').value || "").trim() },
+                    { "name": (document.getElementById('name-input-6').value || "").trim() },
+                    { "name": (document.getElementById('name-input-7').value || "").trim() }
                 ]
             },
             "redteam": {
@@ -266,11 +275,11 @@ async function saveToServer() {
                 "score": document.getElementById('name-input-9').value,
                 "logo": currentRedLogo,
                 "playerlist": [
-                    { "name": document.getElementById('name-input-10').value },
-                    { "name": document.getElementById('name-input-11').value },
-                    { "name": document.getElementById('name-input-12').value },
-                    { "name": document.getElementById('name-input-13').value },
-                    { "name": document.getElementById('name-input-14').value }
+                    { "name": (document.getElementById('name-input-10').value || "").trim() },
+                    { "name": (document.getElementById('name-input-11').value || "").trim() },
+                    { "name": (document.getElementById('name-input-12').value || "").trim() },
+                    { "name": (document.getElementById('name-input-13').value || "").trim() },
+                    { "name": (document.getElementById('name-input-14').value || "").trim() }
                 ]
             }
         }
@@ -445,6 +454,10 @@ function resetSwapUI() {
         btn.style.backgroundColor = '';
     });
 }
+
+// ============================================================================
+// END OF TEAM NAME FONT SIZE CONTROL
+// ============================================================================
 
 // --- INITIALIZATION ---
 
