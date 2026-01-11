@@ -55,13 +55,18 @@ function initializeFirebase() {
 
 /**
  * Clean hero data - extract hero name from path
+ * Firestore doesn't allow empty objects {}, so we handle them properly
  * @param {Object} heroObj - Hero object with path
  * @returns {Object} Hero object with clean name
  */
 function cleanHeroData(heroObj) {
-<<<<<<< Updated upstream
-    if (!heroObj || !heroObj.hero) {
-        return heroObj;
+    // Handle empty objects {} - Firestore doesn't allow empty objects
+    if (!heroObj || typeof heroObj !== 'object' || Object.keys(heroObj).length === 0) {
+        return { hero: '' }; // Return object with property instead of empty object
+    }
+    
+    if (!heroObj.hero) {
+        return { hero: '' }; // Return object with property if hero is missing
     }
     
     // Extract hero name from path: "/Assets/HeroPick/phoveus.png" -> "phoveus"
@@ -71,19 +76,6 @@ function cleanHeroData(heroObj) {
         .replace('.png', '');
     
     return { hero: heroName };
-=======
-  if (!heroObj || !heroObj.hero) {
-    return heroObj;
-  }
-
-  // Extract hero name from path: "/Assets/HeroPick/phoveus.png" -> "phoveus"
-  const heroPath = heroObj.hero;
-  const heroName = heroPath
-    .replace("/Assets/HeroPick/", "")
-    .replace(".png", "");
-
-  return { hero: heroName };
->>>>>>> Stashed changes
 }
 
 /**
@@ -92,7 +84,6 @@ function cleanHeroData(heroObj) {
  * @returns {Object} Draft data with clean hero names
  */
 function cleanDraftData(draftData) {
-<<<<<<< Updated upstream
     const cleaned = JSON.parse(JSON.stringify(draftData)); // Deep clone
     
     if (cleaned.draftdata) {
@@ -118,47 +109,17 @@ function cleanDraftData(draftData) {
     }
     
     return cleaned;
-=======
-  const cleaned = JSON.parse(JSON.stringify(draftData)); // Deep clone
-
-  if (cleaned.draftdata) {
-    // Clean blueside heroes
-    if (cleaned.draftdata.blueside) {
-      if (cleaned.draftdata.blueside.ban) {
-        cleaned.draftdata.blueside.ban =
-          cleaned.draftdata.blueside.ban.map(cleanHeroData);
-      }
-      if (cleaned.draftdata.blueside.pick) {
-        cleaned.draftdata.blueside.pick =
-          cleaned.draftdata.blueside.pick.map(cleanHeroData);
-      }
-    }
-
-    // Clean redside heroes
-    if (cleaned.draftdata.redside) {
-      if (cleaned.draftdata.redside.ban) {
-        cleaned.draftdata.redside.ban =
-          cleaned.draftdata.redside.ban.map(cleanHeroData);
-      }
-      if (cleaned.draftdata.redside.pick) {
-        cleaned.draftdata.redside.pick =
-          cleaned.draftdata.redside.pick.map(cleanHeroData);
-      }
-    }
-  }
-
-  return cleaned;
->>>>>>> Stashed changes
 }
 
 /**
  * Save match draft to Firestore with team data
+ * Uses flattened teamData structure to avoid nested entity issues
+ * Excludes logos to avoid exceeding Firestore 1MB document size limit
  * @param {Object} draftData - The draft data to save
  * @param {Object} teamData - The team data (names and scores)
  * @returns {Promise<Object>} Result with success status and message
  */
 async function saveMatchDraft(draftData, teamData) {
-<<<<<<< Updated upstream
     try {
         if (!db) {
             const initDb = initializeFirebase();
@@ -167,25 +128,58 @@ async function saveMatchDraft(draftData, teamData) {
             }
         }
 
-        // Extract team names and score
+        // Extract team names and scores
         const blueTeamName = teamData.teamdata.blueteam.teamname || 'BlueTeam';
         const redTeamName = teamData.teamdata.redteam.teamname || 'RedTeam';
-        const score = teamData.teamdata.blueteam.score || '0';
+        const blueScore = parseInt(teamData.teamdata.blueteam.score) || 0;
+        const redScore = parseInt(teamData.teamdata.redteam.score) || 0;
 
         // Clean team names (remove spaces and special characters)
         const cleanBlueName = blueTeamName.replace(/\s+/g, '');
         const cleanRedName = redTeamName.replace(/\s+/g, '');
 
-        // Generate document ID: Draft{score}_{Team1}VS{Team2}
-        const docId = `Draft${score}_${cleanBlueName}VS${cleanRedName}`;
+        // Generate document ID: If both scores are 0, use "Draft1", otherwise use the blue score
+        const draftNumber = (blueScore === 0 && redScore === 0) ? '1' : String(blueScore);
+        const docId = `Draft${draftNumber}_${cleanBlueName}VS${cleanRedName}`;
 
         // Clean hero data (remove paths and extensions)
         const cleanedDraft = cleanDraftData(draftData);
 
-        // Add metadata
+        // Extract and flatten team data - create a simple structure without nested objects
+        // Exclude logos to avoid exceeding Firestore 1MB document size limit
+        const teamdata = teamData?.teamdata || {};
+        const blueteam = teamdata.blueteam || {};
+        const redteam = teamdata.redteam || {};
+        
+        // Convert playerlist arrays to simple string arrays (no nested objects)
+        const bluePlayerNames = (Array.isArray(blueteam.playerlist) ? blueteam.playerlist : []).map((player) => {
+            if (!player || typeof player !== 'object' || Object.keys(player).length === 0) {
+                return '';
+            }
+            return String(player.name || player.Name || player.NAME || '');
+        });
+        
+        const redPlayerNames = (Array.isArray(redteam.playerlist) ? redteam.playerlist : []).map((player) => {
+            if (!player || typeof player !== 'object' || Object.keys(player).length === 0) {
+                return '';
+            }
+            return String(player.name || player.Name || player.NAME || '');
+        });
+        
+        // Flattened structure - no nested objects, no logos (too large for Firestore)
+        const cleanTeamDataForFirestore = {
+            blueTeamName: String(blueteam.teamname || ''),
+            blueScore: String(blueteam.score || '0'),
+            bluePlayers: bluePlayerNames,
+            redTeamName: String(redteam.teamname || ''),
+            redScore: String(redteam.score || '0'),
+            redPlayers: redPlayerNames
+        };
+
+        // Add metadata - flattened structure to avoid nested entity issues
         const dataToSave = {
-            ...cleanedDraft,
-            teamData: teamData.teamdata,
+            draftdata: cleanedDraft?.draftdata || {},
+            teamData: cleanTeamDataForFirestore,
             savedAt: Date.now(),
             savedDate: new Date().toISOString()
         };
@@ -207,14 +201,6 @@ async function saveMatchDraft(draftData, teamData) {
             success: false,
             message: `Error saving to Firestore: ${error.message}`
         };
-=======
-  try {
-    if (!db) {
-      const initDb = initializeFirebase();
-      if (!initDb) {
-        throw new Error("Firebase not initialized");
-      }
->>>>>>> Stashed changes
     }
 }
 

@@ -2,138 +2,76 @@
   "draftdata": {
     "timer": "60",
     "timerRunning": false,
-    "current_phase": 18,
+    "current_phase": 17,
     "blueside": {
       "ban": [
         {
-<<<<<<< Updated upstream
-          "hero": "/Assets/HeroPick/alucard.png"
-        },
-        {
-          "hero": "/Assets/HeroPick/chang_e.png"
-        },
-        {
-          "hero": "/Assets/HeroPick/valir.png"
+          "hero": "/Assets/HeroPick/angela.png"
         },
         {
           "hero": "/Assets/HeroPick/jawhead.png"
         },
         {
-          "hero": "/Assets/HeroPick/chou.png"
-=======
-          "hero": "/Assets/HeroPick/aamon.png"
+          "hero": "/Assets/HeroPick/beleric.png"
+        },
+        {
+          "hero": "/Assets/HeroPick/jawhead.png"
+        },
+        {
+          "hero": "/Assets/HeroPick/alice.png"
+        }
+      ],
+      "pick": [
+        {
+          "hero": "/Assets/HeroPick/badang.png"
         },
         {
           "hero": "/Assets/HeroPick/argus.png"
         },
         {
-          "hero": "/Assets/HeroPick/paquito.png"
+          "hero": "/Assets/HeroPick/terizla.png"
         },
         {
-          "hero": ""
+          "hero": "/Assets/HeroPick/akai.png"
         },
         {
-          "hero": ""
->>>>>>> Stashed changes
-        }
-      ],
-      "pick": [
-        {
-<<<<<<< Updated upstream
-          "hero": "/Assets/HeroPick/karina.png"
-        },
-        {
-          "hero": "/Assets/HeroPick/helcurt.png"
-        },
-        {
-          "hero": "/Assets/HeroPick/beatrix.png"
-        },
-        {
-          "hero": "/Assets/HeroPick/nana.png"
-        },
-        {
-          "hero": "/Assets/HeroPick/bane.png"
-=======
-          "hero": ""
-        },
-        {
-          "hero": ""
-        },
-        {
-          "hero": ""
-        },
-        {
-          "hero": ""
-        },
-        {
-          "hero": ""
->>>>>>> Stashed changes
+          "hero": "/Assets/HeroPick/gatotkaca.png"
         }
       ]
     },
     "redside": {
       "ban": [
         {
-<<<<<<< Updated upstream
-          "hero": "/Assets/HeroPick/carmila.png"
+          "hero": "/Assets/HeroPick/beatrix.png"
         },
         {
-          "hero": "/Assets/HeroPick/chang_e.png"
+          "hero": "/Assets/HeroPick/argus.png"
         },
         {
-          "hero": "/Assets/HeroPick/lancelot.png"
+          "hero": "/Assets/HeroPick/atlas.png"
         },
         {
-          "hero": "/Assets/HeroPick/akai.png"
+          "hero": "/Assets/HeroPick/bane.png"
         },
         {
-          "hero": "/Assets/HeroPick/claude.png"
-=======
-          "hero": "/Assets/HeroPick/aldous.png"
+          "hero": "/Assets/HeroPick/wanwan.png"
+        }
+      ],
+      "pick": [
+        {
+          "hero": "/Assets/HeroPick/balmond.png"
+        },
+        {
+          "hero": "/Assets/HeroPick/argus.png"
         },
         {
           "hero": "/Assets/HeroPick/badang.png"
         },
         {
-          "hero": "/Assets/HeroPick/ixia.png"
+          "hero": "/Assets/HeroPick/aldous.png"
         },
         {
-          "hero": ""
-        },
-        {
-          "hero": ""
->>>>>>> Stashed changes
-        }
-      ],
-      "pick": [
-        {
-<<<<<<< Updated upstream
-          "hero": "/Assets/HeroPick/bane.png"
-        },
-        {
-          "hero": "/Assets/HeroPick/zilong.png"
-=======
-          "hero": ""
-        },
-        {
-          "hero": ""
->>>>>>> Stashed changes
-        },
-        {
-          "hero": "/Assets/HeroPick/grock.png"
-        },
-        {
-<<<<<<< Updated upstream
-          "hero": "/Assets/HeroPick/gatotkaca.png"
-        },
-        {
-          "hero": "/Assets/HeroPick/guinevere.png"
-=======
-          "hero": ""
-        },
-        {
-          "hero": ""
->>>>>>> Stashed changes
+          "hero": "/Assets/HeroPick/angela.png"
         }
       ]
     },

@@ -24,6 +24,12 @@ const wss = new WebSocket.Server({ server });
 // Limit besar untuk handle upload gambar base64
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ extended: true, limit: "50mb" }));
+
+// Default route - redirect to control.html
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "control.html"));
+});
+
 app.use(express.static("public"));
 
 // ==========================================
@@ -254,7 +260,19 @@ app.post("/api/archive-draft", async (req, res) => {
   try {
     // 1. Baca draft saat ini
     const currentDraftRaw = await fs.readFile(draftDataPath, "utf8");
-    const currentDraft = JSON.parse(currentDraftRaw);
+    
+    // Validate JSON before parsing
+    let currentDraft;
+    try {
+      currentDraft = JSON.parse(currentDraftRaw);
+    } catch (parseError) {
+      console.error('❌ Error parsing draft JSON:', parseError.message);
+      console.error('First 500 chars of file:', currentDraftRaw.substring(0, 500));
+      // If JSON is corrupted, use default structure
+      currentDraft = defaultDraftData;
+      // Try to fix the file
+      await fs.writeFile(draftDataPath, JSON.stringify(defaultDraftData, null, 2));
+    }
 
     // 2. Baca team data
     const teamDataRaw = await fs.readFile(matchDataPath, "utf8");
