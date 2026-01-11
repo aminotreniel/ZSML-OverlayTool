@@ -2,7 +2,11 @@
   "draftdata": {
     "timer": "60",
     "timerRunning": false,
+<<<<<<< Updated upstream
     "current_phase": 17,
+=======
+    "current_phase": 6,
+>>>>>>> Stashed changes
     "blueside": {
       "ban": [
         {
@@ -23,6 +27,7 @@
       ],
       "pick": [
         {
+<<<<<<< Updated upstream
           "hero": "/Assets/HeroPick/bane.png"
         },
         {
@@ -30,12 +35,61 @@
         },
         {
           "hero": "/Assets/HeroPick/phoveus.png"
+=======
+          "hero": ""
+        },
+        {
+          "hero": ""
+        },
+        {
+          "hero": ""
+        },
+        {
+          "hero": ""
+        },
+        {
+          "hero": ""
+        }
+      ]
+    },
+    "redside": {
+      "ban": [
+        {
+          "hero": "/Assets/HeroPick/aldous.png"
+        },
+        {
+          "hero": "/Assets/HeroPick/badang.png"
+>>>>>>> Stashed changes
         },
         {
           "hero": "/Assets/HeroPick/ixia.png"
         },
         {
+<<<<<<< Updated upstream
           "hero": "/Assets/HeroPick/helcurt.png"
+=======
+          "hero": ""
+        },
+        {
+          "hero": ""
+        }
+      ],
+      "pick": [
+        {
+          "hero": ""
+        },
+        {
+          "hero": ""
+        },
+        {
+          "hero": ""
+        },
+        {
+          "hero": ""
+        },
+        {
+          "hero": ""
+>>>>>>> Stashed changes
         }
       ]
     },

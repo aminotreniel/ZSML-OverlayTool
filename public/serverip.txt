@@ -1,1 +1,5 @@
+<<<<<<< Updated upstream
 192.168.56.1
+=======
+192.168.1.8
+>>>>>>> Stashed changes

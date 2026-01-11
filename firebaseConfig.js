@@ -59,6 +59,7 @@ function initializeFirebase() {
  * @returns {Object} Hero object with clean name
  */
 function cleanHeroData(heroObj) {
+<<<<<<< Updated upstream
     if (!heroObj || !heroObj.hero) {
         return heroObj;
     }
@@ -70,6 +71,19 @@ function cleanHeroData(heroObj) {
         .replace('.png', '');
     
     return { hero: heroName };
+=======
+  if (!heroObj || !heroObj.hero) {
+    return heroObj;
+  }
+
+  // Extract hero name from path: "/Assets/HeroPick/phoveus.png" -> "phoveus"
+  const heroPath = heroObj.hero;
+  const heroName = heroPath
+    .replace("/Assets/HeroPick/", "")
+    .replace(".png", "");
+
+  return { hero: heroName };
+>>>>>>> Stashed changes
 }
 
 /**
@@ -78,6 +92,7 @@ function cleanHeroData(heroObj) {
  * @returns {Object} Draft data with clean hero names
  */
 function cleanDraftData(draftData) {
+<<<<<<< Updated upstream
     const cleaned = JSON.parse(JSON.stringify(draftData)); // Deep clone
     
     if (cleaned.draftdata) {
@@ -103,6 +118,37 @@ function cleanDraftData(draftData) {
     }
     
     return cleaned;
+=======
+  const cleaned = JSON.parse(JSON.stringify(draftData)); // Deep clone
+
+  if (cleaned.draftdata) {
+    // Clean blueside heroes
+    if (cleaned.draftdata.blueside) {
+      if (cleaned.draftdata.blueside.ban) {
+        cleaned.draftdata.blueside.ban =
+          cleaned.draftdata.blueside.ban.map(cleanHeroData);
+      }
+      if (cleaned.draftdata.blueside.pick) {
+        cleaned.draftdata.blueside.pick =
+          cleaned.draftdata.blueside.pick.map(cleanHeroData);
+      }
+    }
+
+    // Clean redside heroes
+    if (cleaned.draftdata.redside) {
+      if (cleaned.draftdata.redside.ban) {
+        cleaned.draftdata.redside.ban =
+          cleaned.draftdata.redside.ban.map(cleanHeroData);
+      }
+      if (cleaned.draftdata.redside.pick) {
+        cleaned.draftdata.redside.pick =
+          cleaned.draftdata.redside.pick.map(cleanHeroData);
+      }
+    }
+  }
+
+  return cleaned;
+>>>>>>> Stashed changes
 }
 
 /**
@@ -112,6 +158,7 @@ function cleanDraftData(draftData) {
  * @returns {Promise<Object>} Result with success status and message
  */
 async function saveMatchDraft(draftData, teamData) {
+<<<<<<< Updated upstream
     try {
         if (!db) {
             const initDb = initializeFirebase();
@@ -160,6 +207,14 @@ async function saveMatchDraft(draftData, teamData) {
             success: false,
             message: `Error saving to Firestore: ${error.message}`
         };
+=======
+  try {
+    if (!db) {
+      const initDb = initializeFirebase();
+      if (!initDb) {
+        throw new Error("Firebase not initialized");
+      }
+>>>>>>> Stashed changes
     }
 }
 
