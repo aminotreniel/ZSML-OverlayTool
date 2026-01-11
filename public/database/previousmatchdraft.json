@@ -2,6 +2,7 @@
   "draftdata": {
     "timer": "60",
     "timerRunning": false,
+<<<<<<< Updated upstream
     "current_phase": 6,
     "blueside": {
       "ban": [
@@ -24,8 +25,19 @@
       "pick": [
         {
           "hero": ""
+=======
+    "current_phase": 18,
+    "blueside": {
+      "ban": [
+        {
+          "hero": "/Assets/HeroPick/beatrix.png"
+>>>>>>> Stashed changes
         },
         {
+          "hero": ""
+        },
+        {
+<<<<<<< Updated upstream
           "hero": ""
         },
         {
@@ -33,15 +45,39 @@
         },
         {
           "hero": ""
+=======
+          "hero": "/Assets/HeroPick/nana.png"
         },
         {
-          "hero": ""
+          "hero": "/Assets/HeroPick/bane.png"
+        },
+        {
+          "hero": "/Assets/HeroPick/alucard.png"
+        }
+      ],
+      "pick": [
+        {
+          "hero": "/Assets/HeroPick/chang_e.png"
+        },
+        {
+          "hero": "/Assets/HeroPick/chou.png"
+        },
+        {
+          "hero": "/Assets/HeroPick/guinevere.png"
+        },
+        {
+          "hero": "/Assets/HeroPick/valir.png"
+        },
+        {
+          "hero": "/Assets/HeroPick/jawhead.png"
+>>>>>>> Stashed changes
         }
       ]
     },
     "redside": {
       "ban": [
         {
+<<<<<<< Updated upstream
           "hero": "/Assets/HeroPick/aldous.png"
         },
         {
@@ -66,12 +102,42 @@
         },
         {
           "hero": ""
+=======
+          "hero": "/Assets/HeroPick/bane.png"
+>>>>>>> Stashed changes
         },
         {
           "hero": ""
         },
         {
+<<<<<<< Updated upstream
           "hero": ""
+=======
+          "hero": "/Assets/HeroPick/gatotkaca.png"
+        },
+        {
+          "hero": "/Assets/HeroPick/akai.png"
+        },
+        {
+          "hero": "/Assets/HeroPick/zilong.png"
+>>>>>>> Stashed changes
+        }
+      ],
+      "pick": [
+        {
+          "hero": "/Assets/HeroPick/carmila.png"
+        },
+        {
+          "hero": "/Assets/HeroPick/grock.png"
+        },
+        {
+          "hero": "/Assets/HeroPick/chang_e.png"
+        },
+        {
+          "hero": "/Assets/HeroPick/claude.png"
+        },
+        {
+          "hero": "/Assets/HeroPick/helcurt.png"
         }
       ]
     },

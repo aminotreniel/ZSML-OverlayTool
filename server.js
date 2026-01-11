@@ -24,6 +24,12 @@ const wss = new WebSocket.Server({ server });
 // Limit besar untuk handle upload gambar base64
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ extended: true, limit: "50mb" }));
+
+// Default route - redirect to control.html
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "control.html"));
+});
+
 app.use(express.static("public"));
 
 // Redirect root to control.html
